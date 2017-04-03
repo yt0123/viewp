@@ -1,0 +1,46 @@
+@themeColor: #000080;
+@subColor: #ffffff;
+
+div.manager-view {
+    position: absolute;
+    width: 100%;
+    border-top: 0.5px solid @subColor;
+    background-color: @themeColor;
+    z-index: 999;
+}
+
+ul.manager-store {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+li.store-list {
+    border-bottom: 0.5px solid @subColor;
+    height: 28px;
+}
+li.store-none {
+    border-bottom: 0.5px solid @subColor;
+    height: 28px;
+    line-height: 28px;
+    font-family: OpenSans-Bold;
+    font-size: 10px;
+    color: @subColor;
+    text-align: center;
+}
+
+div.manager-load {
+    border-bottom: 0.5px solid @subColor;
+    height: 32px;
+    background-color: rgb(66, 133, 244);
+    span {
+        display: block;
+        height: 32px;
+        line-height: 32px;
+        text-align: center;
+        font-family: OpenSans-Bold;
+        font-size: 9.5px;
+        color: @subColor;
+        cursor: pointer;
+    }
+}
+

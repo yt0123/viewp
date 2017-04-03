@@ -1,0 +1,64 @@
+@themeColor: #000080;
+@subColor: #ffffff;
+
+div.map {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    z-index: 998;
+
+    div.ol-zoom {
+        top: 4.5em;
+    }
+
+    div.prop-view {
+        bottom: 1.0em;
+        left: 0.5em;
+        ul {
+            margin: 0 1px;
+            padding: 0;
+            list-style: none;
+            display: none;
+            li {
+                border-radius: 2px;
+                width: 90px;
+                padding: 5px;
+                display: block;
+                text-align: center;
+                font-size: 12px;
+                font-family: OpenSans-Bold;
+                cursor: pointer;
+            }
+            li:hover {
+                background-color: rgba(0,0,0,0.4);
+            }
+        }
+        ul.active {
+            display: inline-block;
+        }
+        button {
+            width: 100px;
+            height: 22px;
+            font-size: 11px;
+        }
+    }
+
+    div.prop-all {
+        top: 8.5em;
+        left: 0.5em;
+        button {
+            width: 1.375em;
+            height: 1.375em;
+        }
+    }
+
+    div.refresh {
+        top: 10.8em;
+        left: 0.5em;
+        button {
+            width: 1.375em;
+            height: 1.375em;
+        }
+    }
+
+}

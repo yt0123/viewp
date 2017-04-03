@@ -1,0 +1,151 @@
+@themeColor: #000080;
+@subColor: #ffffff;
+
+@font-face {
+    font-family: 'OpenSans';
+    src: url(../fonts/Open_Sans/OpenSans-Regular.ttf);
+}
+@font-face {
+    font-family: 'OpenSans-Bold';
+    src: url(../fonts/Open_Sans/OpenSans-Bold.ttf);
+}
+@font-face {
+    font-family: 'Oswald';
+    src: url(../fonts/Oswald/Oswald-Regular.ttf);
+}
+@font-face {
+    font-family: 'Dosis';
+    src: url(../fonts/Dosis/Dosis-Regular.ttf);
+}
+@font-face {
+    font-family: 'Dosis-Bold';
+    src: url(../fonts/Dosis/Dosis-Bold.ttf);
+}
+
+@import 'map.less';
+@import 'picker.less';
+@import 'manager.less';
+@import 'source.less';
+@import 'setting.less';
+
+.boxCenter {
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+}
+.linearLeft {
+    float: left;
+}
+.linearRight {
+    float: right;
+}
+.linearContainer {
+    overflow: hidden;
+}
+/* clearfix */
+.linearContainer:before, .linearContainer:after {
+    content: "";
+    display: table;
+}
+.linearContainer:after {
+    clear: both;
+}
+
+html, body {
+    height: 100%;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+}
+div#root {
+    height: 100%;
+    width: 100%;
+    div.container {
+        min-height: 500px;
+        min-width: 500px;
+        height: 100%;
+        width: 100%;
+    }
+}
+div.header {
+    height: 55px;
+    width: 100%;
+    min-width: 500px;
+    background-color: @subColor;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    div.headerContents {
+        padding: 5px 0 5px;
+        height: 45px;
+        background-color: @themeColor;
+        div.appLogo {
+            width: 120px;
+            height: 45px;
+            margin: 0 20px;
+            div.logoBox {
+            }
+            div.logoImg {
+                width: 40px;
+                height: 40px;
+                padding-bottom: 5px;
+            }
+            div.logoText {
+                width: 72px;
+                height: 45px;
+                padding-left: 3px;
+                span {
+                    position: absolute;
+                    bottom: 0;
+                    font-size: 27px;
+                    font-family: Oswald;
+                    color: @subColor;
+                }
+            }
+        }
+        div.appSetting {
+            width: 24px;
+            height: 24px;
+            margin-right: 10px;
+            button {
+                width: 24px;
+                height: 24px;
+                padding: 5px;
+                border: 0.16em solid #dcdcdc;
+                border-radius: 2px;
+                cursor: pointer;
+                background-color: @themeColor;
+            }
+        }
+        div.appManager {
+            width: 90px;
+            height: 24px;
+            margin-right: 10px;
+            div.manager-toggle {
+                width: 88px;
+                height: 22px;
+                padding: 0;
+                border: 1px solid #dcdcdc;
+                border-radius: 2px;
+                cursor: pointer;
+                background-color: @themeColor;
+                span {
+                    width: 71px;
+                    height: 22px;
+                    margin: 0;
+                    line-height: 22px;
+                    text-align:center;
+                    display: block;
+                    font-family: OpenSans-Bold;
+                    font-size: 11.5px;
+                    color: @subColor;
+                }
+                img {
+                    margin: 5.5px 5px 4.5px 0px;
+                }
+            }
+        }
+    }
+}
+

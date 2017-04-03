@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Viewp</title>
+    <link rel="stylesheet" href="dest/css/ol.min.css" type="text/css" charset="UTF-8">
+    <link rel="stylesheet" href="dest/css/style.min.css" type="text/css" charset="UTF-8">
+  </head>
+  <body>
+    <div class="header">
+      <div class="headerContents linerContainer">
+        <div class="appLogo linerLeft boxCenter">
+          <div class="logoBox linerContainer">
+            <div class="logoImg linerLeft">
+              <img src="dest/img/app-icon.png" width="40px" height="40px">
+            </div>
+            <div class="logoText linerLeft">
+              <span>Viewp</span>
+            </div>
+          </div>
+        </div>
+        <div class="appSetting linerRight boxCenter">
+          <button type="button" class="setting-toggle">
+            <img id="setting" src="dest/img/setting-icon.png" width="12px" height="12px">
+          </button>
+        </div>
+        <div class="appManager linerRight boxCenter">
+          <div class="manager-toggle linerContainer">
+              <span class="linerLeft">My Source</span>
+              <img class="linerLeft" src="dest/img/down-icon.png" width="12px" height="12px">
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="map" class="map"></div>
+    <script>require('electron-connect').client.create();</script>
+    <script type="text/javascript" src="lib/js/bundle.js" charset="UTF-8"></script>
+  </body>
+</html>

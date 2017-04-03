@@ -1,0 +1,91 @@
+@themeColor: #000080;
+@subColor: #ffffff;
+
+div.picker-view {
+    display: block;
+    position: absolute;
+    margin-top: 30px;
+    margin-left: 75px;
+    height: 148px;
+    width: 370px;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-100%);
+    border-radius: 2px;
+    background-color: @themeColor;
+}
+
+div.picker-view:before {
+    position: absolute;
+    top: -15px;
+    left: 85%;
+    margin-left: -10px;
+    content: '';
+    border-bottom: 15px solid @themeColor;
+    border-left: 15px solid transparent;
+    border-right: 15px solid transparent;
+}
+
+div.picker-body {
+    border: 1px solid #dcdcdc;
+    height: 126px;
+    width: 348px;
+    margin: 10px;
+    background-color: @subColor;
+}
+/* clearfix */
+div.picker-wrapper:before, div.picker-wrapper:after {
+    content: "";
+    display: table;
+}
+div.picker-wrapper:after {
+    clear: both;
+}
+
+div.rgb-data {
+    float: left;
+    width: 92px;
+    height: 86px;
+    line-height: 86px;
+    text-align: center;
+    background-color: @themeColor;
+    font-family: OpenSans-Bold;
+    font-size: 9.5px;
+    color: #000000;
+}
+div.rgb-colormap {
+    float: right;
+    position: relative;
+    width: 256px;
+    height: 86px;
+}
+div.colormap-widget {
+    position: absolute;
+    height: 16px;
+    width: 16px;
+    border: 0.16em solid @subColor;
+    border-radius: 10px;
+    background-color: @themeColor;
+    transform: translate(-50%, -50%);
+    cursor: pointer;
+}
+div.hue-slider {
+    position: relative;
+    margin: 16px;
+    height: 8px;
+    width: 306px;
+    border-radius: 3px;
+    background: linear-gradient(to right, #ff0000 0%, #ffff00 17%, #00ff00 33%, #00ffff 50%, #0000ff 67%, #ff00ff 83%, #ff0000 100%);
+}
+div.slider-widget {
+    position: absolute;
+    top: 50%;
+    height: 16px;
+    width: 16px;
+    border: 0.16em solid @subColor;
+    border-radius: 10px;
+    background-color: @themeColor;
+    transform: translate(-50%, -50%);
+    cursor: pointer;
+}
+
