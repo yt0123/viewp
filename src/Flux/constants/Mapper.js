@@ -34,14 +34,15 @@ function createStyleFunction(rgb, alpha, properties) {
 }
 function createPropFunction(id, properties) {
     console.log(id);
-    for (var i = 0; i < properties.length; i++) {
+    for (var i = 0; i < properties[0].length; i++) {
         if (properties[i] in property) {
-            property[properties[i]].push(id);
+            property[properties[0][i]].push(id);
         } else {
-            property[properties[i]] = [ id ];
+            console.log(properties);
+            property[properties[0][i]] = [ id ];
             var list = document.createElement('li');
-            list.innerHTML = properties[i];
-            list.id = properties[i];
+            list.innerHTML = properties[0][i];
+            list.value = properties[1][i];
             list.addEventListener('click', function(ev) {
                 document.getElementsByClassName('target-property')[0].innerHTML = this.innerHTML;
                 document.getElementsByClassName('properties')[0].classList.remove('active');
@@ -275,7 +276,7 @@ Mapper.prototype.change = function(action) {
         var accessLayer = this.map.getLayers().getArray()[action.index+1];
         accessLayer.setSource(new ol.source.Vector({ features: newFeatures, format: sourceFormat }));
         accessLayer.setStyle(createStyleFunction(newSource.color, 0.5, newSource.extra));
-        createPropFunction(action.index, newSource.extra[0]);
+        createPropFunction(action.index, newSource.extra);
         break;
 
     case ActionTypes.DELETE_SOURCE:
