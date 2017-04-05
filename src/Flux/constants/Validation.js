@@ -1,4 +1,19 @@
-function properties(data) {
+function keySearch(tree, log = [['none'],['']], branch = []) {
+    for (var key in tree) {
+        if (log[0].indexOf(key) != -1) {
+            continue;
+        } else {
+            log[0].push(key);
+            log[1].push(branch.join('-'));
+            if (Object.prototype.toString.call(tree[key]) === '[object Object]') {
+                branch.push(key);
+                for (var nextKey in tree[key]) {
+                    keySearch(tree[key], log, branch);
+                }
+            }
+        }
+    }
+    return log;
 }
 
 var Validation = (function() {
@@ -25,19 +40,12 @@ Validation.prototype.getResult = function() {
     return result;
 };
 Validation.prototype.getProperties = function() {
-    var record = ['none'];
+    var log;
     var features = this.subject.features;
-    Array.prototype.push.apply(record, Object.keys(features[0].properties));
-    for (var i = 1; i < features.length; i++) {
-        for (var key in features[i].properties) {
-            if (record.indexOf(key) != -1) {
-                continue;
-            } else {
-                record.push(key);
-            }
-        }
-    }
-    return record;
+    features.forEach(function(feature, index, array) {
+        log = keySearch(feature.properties, log);
+    });
+    return log;
 };
 
 
