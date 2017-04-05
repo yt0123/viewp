@@ -24,7 +24,7 @@ var Source = React.createClass({
     },
     render: function() {
         var { source, actions } = this.props;
-        var staples = source.extra.map(function(elm, index) { return <option key={index}>{elm}</option>; });
+        var staples = source.extra[0].map(function(elm, index) { return <option key={index}>{elm}</option>; });
         return (
             <span className="source-wrapper">
               <span className="source-statebox widgetLeft">

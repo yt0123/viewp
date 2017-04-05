@@ -221,6 +221,7 @@ ol.inherits(PropInteraction, ol.interaction.Pointer);
 var Mapper = (function() {
     function Mapper(DOMtarget, config) {
         this.config = config;
+        this.staples = [];
         this.layers = [];
         this.raster = new ol.source.XYZ({
             urls: [
@@ -268,14 +269,13 @@ Mapper.prototype.change = function(action) {
     case ActionTypes.ADD_SOURCE:
         this.map.addLayer(new ol.layer.Vector());
         var newSource = action.source[action.index];
-        console.log(newSource);
         var sourceFormat = new ol.format.GeoJSON({ dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857' });
         var newFeatures = sourceFormat.readFeatures(newSource.body);
         newFeatures.forEach(function(feature, index, array) { feature.setId(index); });
         var accessLayer = this.map.getLayers().getArray()[action.index+1];
         accessLayer.setSource(new ol.source.Vector({ features: newFeatures, format: sourceFormat }));
         accessLayer.setStyle(createStyleFunction(newSource.color, 0.5, newSource.extra));
-        createPropFunction(action.index, newSource.extra);
+        createPropFunction(action.index, newSource.extra[0]);
         break;
 
     case ActionTypes.DELETE_SOURCE:
@@ -294,7 +294,10 @@ Mapper.prototype.change = function(action) {
         var newStaple = action.source[action.index].staple;
         var accessLayer = this.map.getLayers().getArray()[action.index+1];
         accessLayer.getSource().getFeatures().forEach(function(feature, index, array) {
-            
+            var props = feature.getProperties();
+            if (newStaple in props) {
+                console.log(props[newStaple]);
+            }
         });
         break;
 

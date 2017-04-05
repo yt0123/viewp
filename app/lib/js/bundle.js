@@ -24063,7 +24063,7 @@ var Source = React.createClass({
             source = _props5.source,
             actions = _props5.actions;
 
-        var staples = source.extra.map(function (elm, index) {
+        var staples = source.extra[0].map(function (elm, index) {
             return React.createElement(
                 'option',
                 { key: index },
@@ -25134,6 +25134,7 @@ ol.inherits(PropInteraction, ol.interaction.Pointer);
 var Mapper = function () {
     function Mapper(DOMtarget, config) {
         this.config = config;
+        this.staples = [];
         this.layers = [];
         this.raster = new ol.source.XYZ({
             urls: ['https://a.tile.openstreetmap.org/{z}/{x}/{y}.png', 'https://b.tile.openstreetmap.org/{z}/{x}/{y}.png', 'https://c.tile.openstreetmap.org/{z}/{x}/{y}.png']
@@ -25161,7 +25162,6 @@ Mapper.prototype.change = function (action) {
         case ActionTypes.ADD_SOURCE:
             this.map.addLayer(new ol.layer.Vector());
             var newSource = action.source[action.index];
-            console.log(newSource);
             var sourceFormat = new ol.format.GeoJSON({ dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857' });
             var newFeatures = sourceFormat.readFeatures(newSource.body);
             newFeatures.forEach(function (feature, index, array) {
@@ -25170,7 +25170,7 @@ Mapper.prototype.change = function (action) {
             var accessLayer = this.map.getLayers().getArray()[action.index + 1];
             accessLayer.setSource(new ol.source.Vector({ features: newFeatures, format: sourceFormat }));
             accessLayer.setStyle(createStyleFunction(newSource.color, 0.5, newSource.extra));
-            createPropFunction(action.index, newSource.extra);
+            createPropFunction(action.index, newSource.extra[0]);
             break;
 
         case ActionTypes.DELETE_SOURCE:
@@ -25188,7 +25188,12 @@ Mapper.prototype.change = function (action) {
         case ActionTypes.STAPLE_SOURCE:
             var newStaple = action.source[action.index].staple;
             var accessLayer = this.map.getLayers().getArray()[action.index + 1];
-            accessLayer.getSource().getFeatures().forEach(function (feature, index, array) {});
+            accessLayer.getSource().getFeatures().forEach(function (feature, index, array) {
+                var props = feature.getProperties();
+                if (newStaple in props) {
+                    console.log(props[newStaple]);
+                }
+            });
             break;
 
         case ActionTypes.COLOR_SOURCE:
@@ -25212,7 +25217,26 @@ module.exports = Mapper;
 },{"./Actiontypes":249,"openlayers":26}],252:[function(require,module,exports){
 'use strict';
 
-function properties(data) {}
+function keySearch(tree) {
+    var log = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [['none'], ['']];
+    var branch = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : [];
+
+    for (var key in tree) {
+        if (log[0].indexOf(key) != -1) {
+            continue;
+        } else {
+            log[0].push(key);
+            log[1].push(branch.join('-'));
+            if (Object.prototype.toString.call(tree[key]) === '[object Object]') {
+                branch.push(key);
+                for (var nextKey in tree[key]) {
+                    keySearch(tree[key], log, branch);
+                }
+            }
+        }
+    }
+    return log;
+}
 
 var Validation = function () {
     function Validation(text) {
@@ -25238,19 +25262,12 @@ Validation.prototype.getResult = function () {
     return result;
 };
 Validation.prototype.getProperties = function () {
-    var record = ['none'];
+    var log;
     var features = this.subject.features;
-    Array.prototype.push.apply(record, Object.keys(features[0].properties));
-    for (var i = 1; i < features.length; i++) {
-        for (var key in features[i].properties) {
-            if (record.indexOf(key) != -1) {
-                continue;
-            } else {
-                record.push(key);
-            }
-        }
-    }
-    return record;
+    features.forEach(function (feature, index, array) {
+        log = keySearch(feature.properties, log);
+    });
+    return log;
 };
 
 module.exports = Validation;
