@@ -1,2 +1,6 @@
 # Git Ignore File
 node_modules/
+app/dest/js/
+app/dest/css/
+app/lib/js/
+app/lib/css/
