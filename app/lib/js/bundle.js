@@ -24975,6 +24975,7 @@ function deletePropFunction(id) {
         }
     }
 }
+function alphaFunction(feature) {}
 
 var PropViewControl = function PropViewControl(opt_options) {
     var options = opt_options || {};
@@ -25170,7 +25171,7 @@ Mapper.prototype.change = function (action) {
             accessLayer.setSource(new ol.source.Vector({ features: newFeatures, format: sourceFormat }));
             accessLayer.setStyle(createStyleFunction(newSource.color, 0.5, newSource.extra));
             createPropFunction(action.index, newSource.extra);
-            break;;
+            break;
 
         case ActionTypes.DELETE_SOURCE:
             var oldLayer = this.map.getLayers().getArray()[action.index + 1];
@@ -25187,6 +25188,7 @@ Mapper.prototype.change = function (action) {
         case ActionTypes.STAPLE_SOURCE:
             var newStaple = action.source[action.index].staple;
             var accessLayer = this.map.getLayers().getArray()[action.index + 1];
+            accessLayer.getSource().getFeatures().forEach(function (feature, index, array) {});
             break;
 
         case ActionTypes.COLOR_SOURCE:
@@ -25196,8 +25198,8 @@ Mapper.prototype.change = function (action) {
             break;
 
         case ActionTypes.CHANGE_ALPHA:
-            this.config.alpha = action.config.alpha;
-            console.log(this.config);
+            var newAlpha = action.config.alpha;
+            console.log(newAlpha);
             break;
 
         default:
