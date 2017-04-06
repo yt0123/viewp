@@ -12,7 +12,7 @@ var electron = require('electron-connect').server.create();
 
 gulp.task('js-compile', function() {
     var bundler = browserify({
-        entries: ['./src/Flux/root.js']
+        entries: ['./src/js/root.js']
     }).transform(babelify, { presets: ['es2015', 'react'] });
     return bundler.bundle()
            .pipe(source('bundle.js'))
@@ -55,7 +55,7 @@ gulp.task('electron', ['js-compile', 'less-compile', 'css-compile'], function() 
 });
 
 gulp.task('watch', function() {
-    gulp.watch('./src/Flux/*.js', ['js-compile']);
+    gulp.watch('./src/js/**/*.js', ['js-compile']);
     gulp.watch('./src/less/*.less', ['less-compile']);
     gulp.watch('./src/css/*.css', ['css-compile']);
 });

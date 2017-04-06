@@ -35,14 +35,14 @@ function createStyleFunction(rgb, alpha, properties) {
 function createPropFunction(id, properties) {
     console.log(id);
     for (var i = 0; i < properties[0].length; i++) {
-        if (properties[i] in property) {
+        if (properties[0][i] in property) {
             property[properties[0][i]].push(id);
         } else {
-            console.log(properties);
-            property[properties[0][i]] = [ id ];
             var list = document.createElement('li');
             list.innerHTML = properties[0][i];
-            list.value = properties[1][i];
+            list.id = properties[0][i];
+            console.log(properties[1][i]);
+            list.setAttribute('value', properties[1][i]);
             list.addEventListener('click', function(ev) {
                 document.getElementsByClassName('target-property')[0].innerHTML = this.innerHTML;
                 document.getElementsByClassName('properties')[0].classList.remove('active');
@@ -72,7 +72,7 @@ var PropViewControl = function(opt_options) {
     var options = opt_options || {};
     var lists = document.createElement('ul');
     lists.classList.add('properties');
-    lists.innerHTML = '<li id=\'none\'>none</li>';
+    lists.innerHTML = '<li id=\'none\' value>none</li>';
     lists.firstElementChild.addEventListener('click', function(ev) {
         document.getElementsByClassName('target-property')[0].innerHTML = this.innerHTML;
         document.getElementsByClassName('properties')[0].classList.remove('active');
@@ -177,6 +177,7 @@ var PropInteraction = function(opt_options) {
         var map = ev.map;
         var counter = 0;
         var target = document.getElementsByClassName('target-property')[0].innerHTML;
+        var targetDepth = document.getElementById(target).getAttribute('value').split('-');
         if (!document.getElementsByClassName('all-property')[0].classList.contains('active')) {
             var feature = map.forEachFeatureAtPixel(ev.pixel, propView);
             function propView(feature) {
