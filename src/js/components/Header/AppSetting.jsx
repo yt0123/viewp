@@ -22,3 +22,25 @@ var AppSetting = React.createClass({
 });
 
 module.exports = AppSetting;
+
+/*
+ * class AppSetting extends React.Component {
+ *     constructor(props) {
+ *         super(props)
+ *     }
+ *     handleClick(ev) {
+ *         const { actions } = this.props;
+ *         actions.changeModal();
+ *     }
+ *     render() {
+ *         const { modal, actions } = this.props;
+ *         return (
+ *             <div className="appSetting linearRight boxCenter">
+ *               <button type="button" className="setting-toggle" onClick={this.handleClick}>
+ *                 <img src="dest/img/setting-icon.png" width="12px" height="12px" />
+ *               </button>
+ *             </div>
+ *         );
+ *     }
+ * }
+ */

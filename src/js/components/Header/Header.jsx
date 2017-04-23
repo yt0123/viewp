@@ -24,3 +24,23 @@ var Header = React.createClass({
 });
 
 module.exports = Header;
+
+/*
+ * class Header extends React.Component {
+ *     constructor(props) {
+ *         super(props)
+ *     }
+ *     render() {
+ *         const { visibility, modal, actions } = this.props;
+ *         return (
+ *             <div className="header">
+ *               <div className="headerContents linearContainer">
+ *                 <AppLogo />
+ *                 <AppSetting modal={modal} actions={actions} />
+ *                 <AppManager visibility={visibility} actions={actions} />
+ *               </div>
+ *             </div>
+ *         );
+ *     }
+ * }
+ */
