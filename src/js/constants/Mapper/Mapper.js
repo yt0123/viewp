@@ -1,6 +1,6 @@
 import ol from 'openlayers';
 import ActionTypes from '../Actiontypes';
-import Extensions from './Extensions';
+import * as Extensions from './Extensions';
 import { PropViewControl, PropViewAllControl, RefreshControl } from './Control';
 import { PropInteraction } from './Interaction';
 
@@ -46,7 +46,7 @@ export default class Map {
     }
 
     change(action) {
-        const accessLayer = this.map.getLayers().getArray()[action.index+1];
+        let accessLayer = this.map.getLayers().getArray()[action.index+1];
         switch (action.type) {
         case ActionTypes.ADD_SOURCE:
             this.map.addLayer(new ol.layer.Vector());
@@ -54,6 +54,7 @@ export default class Map {
             const sourceFormat = new ol.format.GeoJSON({ dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857' });
             const newFeatures = sourceFormat.readFeatures(newSource.body);
             newFeatures.forEach(function(feature, index, array) { feature.setId(index); });
+            if (!accessLayer) { accessLayer = this.map.getLayers().getArray()[action.index+1]; }
             accessLayer.setSource(new ol.source.Vector({ features: newFeatures, format: sourceFormat }));
             accessLayer.setStyle(Extensions.createStyleFunction(newSource.color, 0.5, newSource.extra));
             Extensions.createPropFunction(action.index, newSource.extra);

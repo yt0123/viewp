@@ -8,7 +8,7 @@ export default class Source extends React.Component {
         this.handleCheck = this.handleCheck.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
         this.handleStaple = this.handleStaple.bind(this);
-        this.handleColor = this.handleColor(this);
+        this.handleColor = this.handleColor.bind(this);
     }
 
     handleCheck(ev) {
