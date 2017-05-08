@@ -1,8 +1,8 @@
-var ActionTypes = require('../constants/ActionTypes');
+import ActionTypes from '../constants/ActionTypes';
 
-var defaultColor = [0,0,255];
+const defaultColor = [0,0,255];
 
-var sources = function (state = [], action) {
+const sources = function (state = [], action) {
     switch (action.type) {
 
     case ActionTypes.ADD_SOURCE:
@@ -43,4 +43,4 @@ var sources = function (state = [], action) {
     }
 };
 
-module.exports = sources;
+export default sources;

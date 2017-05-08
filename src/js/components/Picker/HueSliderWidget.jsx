@@ -1,19 +1,18 @@
-var React = require('react');
+import React from 'react';
+import PropTypes from 'prop-types';
 
-var HueSliderWidget = React.createClass({
-    propTypes: {
-        color: React.PropTypes.array.isRequired,
-        limit: React.PropTypes.number.isRequired,
-        handleChange: React.PropTypes.func.isRequired
-    },
-    getInitialState: function() {
-        return { x: 0, widgetX: null };
-    },
-    handleDnD: function(event) {
-        var self = this;
-        var { handleChange, limit } = this.props;
-        var { x, widgetX } = this.state;
-        var { widget } = this.refs;
+export default class HueSliderWidget extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = { x: 0, widgetX: null };
+        this.handleDnD = this.handleDnD.bind(this);
+    }
+
+    handleDnD(event) {
+        const self = this;
+        const { handleChange, limit } = this.props;
+        const { x, widgetX } = this.state;
+        const { widget } = this.refs;
 
         switch(event.type) {
 
@@ -24,7 +23,7 @@ var HueSliderWidget = React.createClass({
 
         case 'mousemove':
             event.preventDefault();
-            var nextX = event.pageX - widgetX;
+            let nextX = event.pageX - widgetX;
             if (nextX > x) {
                 nextX = nextX > limit ? limit : nextX ;
             } else if (nextX < x) {
@@ -49,11 +48,12 @@ var HueSliderWidget = React.createClass({
             break;
 
         }
-    },
-    componentWillMount: function() {
-        var { color, limit } = this.props;
-        var max = Math.max(color[0], color[1], color[2]), min = Math.min(color[0], color[1], color[2]);
-        var initX = 0;
+    }
+
+    componentWillMount() {
+        const { color, limit } = this.props;
+        const max = Math.max(color[0], color[1], color[2]), min = Math.min(color[0], color[1], color[2]);
+        let initX = 0;
         if (max !== min) {
             if (max == color[0]) initX = 60 * (color[1] - color[2]) / (max-min);
             if (max == color[1]) initX = 60 * (color[2] - color[0]) / (max-min) + 120;
@@ -61,15 +61,20 @@ var HueSliderWidget = React.createClass({
         }
         initX = initX < 0 ? initX + 360 : initX ;
         this.setState({ x: Math.round((initX/360)*limit) });
-    },
-    render: function() {
-        var { color } = this.props;
-        var { x } = this.state;
-        var styles = { backgroundColor: 'rgb(' + color.join(',') + ')', left: x + 'px' };
+    }
+
+    render() {
+        const { color } = this.props;
+        const { x } = this.state;
+        const styles = { backgroundColor: 'rgb(' + color.join(',') + ')', left: x + 'px' };
         return (
             <div ref="widget" className="slider-widget" onMouseDown={this.handleDnD} style={styles}></div>
         );
     }
-});
+}
 
-module.exports = HueSliderWidget;
+HueSliderWidget.propTypes = {
+    color: PropTypes.array.isRequired,
+    limit: PropTypes.number.isRequired,
+    handleChange: PropTypes.func.isRequired
+};

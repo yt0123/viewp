@@ -1,14 +1,14 @@
-var { combineReducers } = require('redux');
-var sources = require('./sources');
-var config = require('./config');
-var visibility = require('./visibility');
-var modal = require('./modal');
+import { combineReducers } from 'redux';
+import sources from './sources';
+import config from './config';
+import visibility from './visibility';
+import modal from './modal';
 
-var rootReducer = combineReducers({
+const rootReducer = combineReducers({
     sources,
     config,
     visibility,
     modal
 });
 
-module.exports =  rootReducer;
+export default rootReducer;

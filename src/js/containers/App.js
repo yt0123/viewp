@@ -1,30 +1,37 @@
-var React = require('react');
-var { bindActionCreators } = require('redux');
-var { connect } = require('react-redux');
-var Actions = require('../actions');
-var Header = require('../components/Header/Header.jsx');
-var Manager = require('../components/Manager/Manager.jsx');
-var Map = require('../components/Map/Map.jsx');
-var Setting = require('../components/Setting/Setting.jsx');
+import React from 'react';
+import PropTypes from 'prop-types';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import  Actions from '../actions';
+import Header from '../components/Header/Header.jsx';
+import Manager from '../components/Manager/Manager.jsx';
+import Map from '../components/Map/Map.jsx';
+import Setting from '../components/Setting/Setting.jsx';
 
-var App = function (props) {
-    var { sources, config, visibility, modal, actions } = props;
-    return (
+class App extends React.Component {
+    constructor(props) {
+        super(props);
+    }
+
+    render() {
+        const { sources, config, visibility, modal, actions } = this.props;
+        return (
             <div className="container">
               <Header visibility={visibility} modal={modal} actions={actions} />
               <Manager sources={sources} visibility={visibility} actions={actions} />
               <Setting config={config} modal={modal} actions={actions} />
               <Map sources={sources} config={config} actions={actions} />
             </div>
-    );
-};
+        );
+    }
+}
 
 App.propTypes = {
-    sources: React.PropTypes.array.isRequired,
-    config: React.PropTypes.object.isRequired,
-    visibility: React.PropTypes.bool.isRequired,
-    modal: React.PropTypes.bool.isRequired,
-    actions: React.PropTypes.object.isRequired
+    sources: PropTypes.array.isRequired,
+    config: PropTypes.object.isRequired,
+    visibility: PropTypes.bool.isRequired,
+    modal: PropTypes.bool.isRequired,
+    actions: PropTypes.object.isRequired
 };
 
 var mapStateToProps = function(state) {
@@ -35,4 +42,4 @@ var mapDispatchToProps = function(dispatch) {
     return { actions: bindActionCreators(Actions, dispatch) };
 };
 
-module.exports = connect(mapStateToProps, mapDispatchToProps)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(App);

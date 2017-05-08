@@ -1,18 +1,20 @@
-var React = require('react');
-var List = require('./List.jsx');
+import React from 'react';
+import PropTypes from 'prop-types';
+import List from './List.jsx';
 
-var Body = React.createClass({
-    propTypes: {
-        config: React.PropTypes.object.isRequired,
-        modal: React.PropTypes.bool.isRequired,
-        actions: React.PropTypes.object.isRequired
-    },
-    handleClick: function(ev) {
-        var { actions } = this.props;
+export default class Body extends React.Component {
+    constructor(props) {
+        super(props);
+        this.handleClick = this.handleClick.bind(this);
+    }
+
+    handleClick(ev) {
+        const { actions } = this.props;
         actions.changeModal();
-    },
-    render: function() {
-        var { config, modal, actions } = this.props;
+    }
+
+    render() {
+        const { config, modal, actions } = this.props;
         return (
             <div className="setting-wrap">
               <div className="setting-menu">
@@ -24,6 +26,10 @@ var Body = React.createClass({
             </div>
         );
     }
-});
+}
 
-module.exports = Body;
+Body.propTypes = {
+    config: PropTypes.object.isRequired,
+    modal: PropTypes.bool.isRequired,
+    actions: PropTypes.object.isRequired
+};

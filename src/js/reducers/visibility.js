@@ -1,6 +1,6 @@
-var ActionTypes = require('../constants/ActionTypes');
+import ActionTypes from '../constants/ActionTypes';
 
-var visibility = function(state = false, action) {
+const visibility = function(state = false, action) {
     switch (action.type) {
 
     case ActionTypes.CHANGE_VISIBILITY:
@@ -12,4 +12,4 @@ var visibility = function(state = false, action) {
     }
 };
 
-module.exports = visibility;
+export default visibility;

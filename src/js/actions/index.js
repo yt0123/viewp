@@ -1,6 +1,6 @@
-var ActionTypes = require('../constants/ActionTypes');
+import ActionTypes from '../constants/ActionTypes';
 
-var Actions = {
+const Actions = {
     addSource: function(text, body, extra) {
         return {
             type: ActionTypes.ADD_SOURCE,
@@ -53,4 +53,4 @@ var Actions = {
     }
 };
 
-module.exports = Actions;
+export default Actions;

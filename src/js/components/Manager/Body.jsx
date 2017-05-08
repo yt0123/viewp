@@ -1,14 +1,15 @@
-var React = require('react');
-var Store = require('./Store.jsx');
-var Load = require('./Load.jsx');
+import React from 'react';
+import PropTypes from 'prop-types';
+import Store from './Store.jsx';
+import Load from './Load.jsx';
 
-var Body = React.createClass({
-    PropTypes: {
-        sources: React.PropTypes.array.isRequired,
-        actions: React.PropTypes.object.isRequired
-    },
-    render: function() {
-        var { sources, actions } = this.props;
+export default class Body extends React.Component {
+    constructor(props) {
+        super(props);
+    }
+
+    render() {
+        const { sources, actions } = this.props;
         return (
             <div className="manager-body">
               <Store sources={sources} actions={actions} />
@@ -16,6 +17,4 @@ var Body = React.createClass({
             </div>
         );
     }
-});
-
-module.exports = Body;
+}

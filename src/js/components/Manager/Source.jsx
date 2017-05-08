@@ -1,30 +1,39 @@
-var React = require('react');
-var BindPicker = require('./BindPicker.jsx');
+import React from 'react';
+import PropTypes from 'prop-types';
+import BindPicker from './BindPicker.jsx';
 
-var Source = React.createClass({
-    propTypes: {
-        source: React.PropTypes.object.isRequired,
-        actions: React.PropTypes.object.isRequired
-    },
-    handleCheck: function(ev) {
-        var { source, actions } = this.props;
+export default class Source extends React.Component {
+    constructor(props) {
+        super(props);
+        this.handleCheck = this.handleCheck.bind(this);
+        this.handleDelete = this.handleDelete.bind(this);
+        this.handleStaple = this.handleStaple.bind(this);
+        this.handleColor = this.handleColor(this);
+    }
+
+    handleCheck(ev) {
+        const { source, actions } = this.props;
         actions.checkSource(source.id);
-    },
-    handleDelete: function(ev) {
-        var { source, actions } = this.props;
+    }
+
+    handleDelete(ev) {
+        const { source, actions } = this.props;
         actions.deleteSource(source.id);
-    },
-    handleStaple: function(ev) {
-        var { source, actions } = this.props;
+    }
+
+    handleStaple(ev) {
+        const { source, actions } = this.props;
         actions.stapleSource(source.id, ev.target.value);
-    },
-    handleColor: function(color) {
-        var { source, actions } = this.props;
+    }
+
+    handleColor(color) {
+        const { source, actions } = this.props;
         actions.colorSource(source.id, color);
-    },
-    render: function() {
-        var { source, actions } = this.props;
-        var staples = source.extra[0].map(function(elm, index) { return <option key={index}>{elm}</option>; });
+    }
+
+    render() {
+        const { source, actions } = this.props;
+        const staples = source.extra[0].map(function(elm, index) { return <option key={index}>{elm}</option>; });
         return (
             <span className="source-wrapper">
               <span className="source-statebox widgetLeft">
@@ -45,6 +54,9 @@ var Source = React.createClass({
             </span>
         );
     }
-});
+}
 
-module.exports = Source;
+Source.propTypes = {
+    source: PropTypes.object.isRequired,
+    actions: PropTypes.object.isRequired
+};

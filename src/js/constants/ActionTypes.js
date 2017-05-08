@@ -1,4 +1,4 @@
-var ActionTypes = {
+const ActionTypes = {
     ADD_SOURCE: 'ADD_SOURCE',
     DELETE_SOURCE: 'DELETE_SOURCE',
     CHECK_SOURCE: 'CHECK_SOURCE',
@@ -9,4 +9,4 @@ var ActionTypes = {
     CHANGE_MODAL: 'CHANGE_MODAL'
 };
 
-module.exports = ActionTypes;
+export default ActionTypes;

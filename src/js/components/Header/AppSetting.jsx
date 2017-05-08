@@ -1,16 +1,19 @@
-var React = require('react');
+import React from 'react';
+import PropTypes from 'prop-types';
 
-var AppSetting = React.createClass({
-    propTypes: {
-        modal: React.PropTypes.bool.isRequired,
-        actions: React.PropTypes.object.isRequired
-    },
-    handleClick: function(ev) {
-        var { actions } = this.props;
+export default class AppSetting extends React.Component {
+    constructor(props) {
+        super(props);
+        this.handleClick = this.handleClick.bind(this);
+    }
+
+    handleClick(ev) {
+        const { actions } = this.props;
         actions.changeModal();
-    },
-    render: function() {
-        var { modal, actions } = this.props;
+    }
+
+    render() {
+        const { modal, actions } = this.props;
         return (
             <div className="appSetting linearRight boxCenter">
               <button type="button" className="setting-toggle" onClick={this.handleClick}>
@@ -19,28 +22,9 @@ var AppSetting = React.createClass({
             </div>
         );
     }
-});
+}
 
-module.exports = AppSetting;
-
-/*
- * class AppSetting extends React.Component {
- *     constructor(props) {
- *         super(props)
- *     }
- *     handleClick(ev) {
- *         const { actions } = this.props;
- *         actions.changeModal();
- *     }
- *     render() {
- *         const { modal, actions } = this.props;
- *         return (
- *             <div className="appSetting linearRight boxCenter">
- *               <button type="button" className="setting-toggle" onClick={this.handleClick}>
- *                 <img src="dest/img/setting-icon.png" width="12px" height="12px" />
- *               </button>
- *             </div>
- *         );
- *     }
- * }
- */
+AppSetting.propTypes = {
+    modal: PropTypes.bool.isRequired,
+    actions: PropTypes.object.isRequired
+};

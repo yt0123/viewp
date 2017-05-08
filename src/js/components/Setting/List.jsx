@@ -1,42 +1,47 @@
-var React = require('react');
+import React from 'react';
+import PropTypes from 'prop-types';
 
-var List = React.createClass({
-    propTypes: {
-        config: React.PropTypes.object.isRequired,
-        actions: React.PropTypes.object.isRequired
-    },
-    getInitialState: function() {
-        return {
-            alpha: this.props.config.alpha,
-            initColor: this.props.initColor,
-            strokeColor: this.props.strokeColor,
-            textAlpha: this.props.textAlpha,
-            outlineColor: this.props.outlineColor
+export default class List extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            alpha: props.config.alpha,
+            initColor: props.initColor,
+            strokeColor: props.strokeColor,
+            textAlpha: props.textAlpha,
+            outlineColor: props.outlineColor
         };
-    },
-    handleMinChange: function(ev) {
-        var { alpha } = this.state;
+        this.handleMinChange = this.handleMinChange.bind(this);
+        this.handleMaxChange = this.handleMaxChange.bind(this);
+        this.handleClick = this.handleClick.bind(this);
+    }
+
+    handleMinChange(ev) {
+        const { alpha } = this.state;
         if (Number(ev.target.value) <= alpha[1]) {
             this.setState({ alpha: [Number(ev.target.value), alpha[1]] });
         } else {
             ev.target.value = alpha[1];
         }
-    },
-    handleMaxChange: function(ev) {
-        var { alpha } = this.state;
+    }
+
+    handleMaxChange(ev) {
+        const { alpha } = this.state;
         if (Number(ev.target.value) >= alpha[0]) {
             this.setState({ alpha: [alpha[0], Number(ev.target.value)] });
         } else {
             ev.target.value = alpha[0];
         }
-    },
-    handleClick: function(ev) {
-        var { config, actions } = this.props;
-        var { alpha, initColor, strokeColor, textAlpha, outlineColor } = this.state;
+    }
+
+    handleClick(ev) {
+        const { config, actions } = this.props;
+        const { alpha, initColor, strokeColor, textAlpha, outlineColor } = this.state;
         actions.changeAlpha(alpha);
-    },
-    render: function() {
-        var { config, actions } = this.props;
+    }
+
+    render() {
+        const { config, actions } = this.props;
         return (
             <ul className="setting-list">
               <li className="setting-alpha linearContainer">
@@ -66,6 +71,9 @@ var List = React.createClass({
             </ul>
         );
     }
-});
+}
 
-module.exports = List;
+List.propTypes = {
+    config: PropTypes.object.isRequired,
+    actions: PropTypes.object.isRequired
+};

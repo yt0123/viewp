@@ -1,21 +1,22 @@
-var React = require('react');
-var Picker = require('../Picker/Picker.jsx');
+import React from 'react';
+import PropTypes from 'prop-types';
+import Picker from '../Picker/Picker.jsx';
 
-var Bind = React.createClass({
-    propTypes: {
-        defaultValue: React.PropTypes.array.isRequired,
-        handleChange: React.PropTypes.func.isRequired
-    },
-    getInitialState: function() {
-        return {
-            color: this.props.defaultValue,
+export default class Bind extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            color: props.defaultValue,
             visibility: false
         };
-    },
-    handleActivate: function(ev) {
-        var { handleChange } = this.props;
-        var { color, visibility } = this.state;
-        var target = ev.target.parentNode;
+        this.handleActivate = this.handleActivate.bind(this);
+        this.handleBind = this.handleBind.bind(this);
+    }
+
+    handleActivate(ev) {
+        const { handleChange } = this.props;
+        const { color, visibility } = this.state;
+        const target = ev.target.parentNode;
         if (visibility) {
             handleChange(color);
             document.removeEventListener('mousedown', deactivate, false);
@@ -24,7 +25,7 @@ var Bind = React.createClass({
             document.addEventListener('mousedown', deactivate, false);
             window.addEventListener('resize', deactivate, false);
         }
-        var self = this;
+        const self = this;
         function deactivate(ev) {
             var ancestor = ev.target;
             while (ancestor.parentNode) {
@@ -39,19 +40,21 @@ var Bind = React.createClass({
             }
         }
         this.setState({ visibility: !visibility });
-    },
-    handleBind: function(nextColor) {
+    }
+
+    handleBind(nextColor) {
         this.setState({ color: nextColor });
-    },
-    render: function() {
-        var { defaultValue, handleChange } = this.props;
-        var { color, visibility } = this.state;
-        var ColorPicker = null;
+    }
+
+    render() {
+        const { defaultValue, handleChange } = this.props;
+        const { color, visibility } = this.state;
+        let ColorPicker = null;
         if (visibility) {
-            var position = { x: this.refs.toggle.offsetLeft, y: this.refs.toggle.offsetTop };
+            const position = { x: this.refs.toggle.offsetLeft, y: this.refs.toggle.offsetTop };
             ColorPicker = <Picker color={color} display={position} handleChange={this.handleBind} />;
         }
-        var styles = {backgroundColor: 'rgb('+color.join(',')+')'};
+        const styles = {backgroundColor: 'rgb('+color.join(',')+')'};
         return (
             <span className="bind-picker">
               <button ref="toggle" className="picker-toggle" style={styles} onClick={this.handleActivate}>
@@ -60,6 +63,9 @@ var Bind = React.createClass({
             </span>
         );
     }
-});
+}
 
-module.exports = Bind;
+Bind.propTypes = {
+    defaultValue: PropTypes.array.isRequired,
+    handleChange: PropTypes.func.isRequired
+};

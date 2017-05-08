@@ -27,6 +27,7 @@
   "dependencies": {
     "immutable": "^3.8.1",
     "openlayers": "^3.20.1",
+    "prop-types": "^15.5.8",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
     "react-redux": "^5.0.2",

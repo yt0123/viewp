@@ -1,30 +1,36 @@
-var React = require('react');
-var Bind = require('../../constants/Bind.js');
+import React from 'react';
+import PropTypes from 'prop-types';
+import Bind from '../../constants/Bind.js';
 
 var map = null;
 
-var Map = React.createClass({
-    propTypes: {
-        sources: React.PropTypes.array.isRequired,
-        config: React.PropTypes.object.isRequired,
-        actions: React.PropTypes.object.isRequired
-    },
-    componentDidMount: function() {
-        var { sources, config } = this.props;
+export default class Map extends React.Component {
+    constructor(props) {
+        super(props);
+    }
+
+    componentDidMount() {
+        const { sources, config } = this.props;
         map = new Bind('map', sources, config);
-    },
-    componentDidUpdate: function(prevProps, prevState) {
-        var { sources, config } = this.props;
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        const { sources, config } = this.props;
         console.log(sources, config);
         map.update(sources, config);
-    },
-    render: function() {
-        var { sources, config, actions } = this.props;
+    }
+
+    render() {
+        const { sources, config, actions } = this.props;
         return (
             <div id="map" className="map">
             </div>
         );
     }
-});
+}
 
-module.exports = Map;
+Map.propTypes = {
+    sources: PropTypes.array.isRequired,
+    config: PropTypes.object.isRequired,
+    actions: PropTypes.object.isRequired
+};

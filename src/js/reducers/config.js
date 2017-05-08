@@ -1,6 +1,6 @@
-var ActionTypes = require('../constants/ActionTypes');
+import ActionTypes from '../constants/ActionTypes';
 
-var defaultConfig = {
+const defaultConfig = {
     alpha: [0.3, 0.7],
     initColor: [0,0,255],
     strokeColor: [170,170,170],
@@ -8,7 +8,7 @@ var defaultConfig = {
     outlineColor: [255,255,255]
 };
 
-var config = function (state = defaultConfig, action) {
+const config = function (state = defaultConfig, action) {
     switch (action.type) {
 
     case ActionTypes.CHANGE_ALPHA:
@@ -22,4 +22,4 @@ var config = function (state = defaultConfig, action) {
     }
 };
 
-module.exports = config;
+export default config;

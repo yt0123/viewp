@@ -1,23 +1,25 @@
-var React = require('react');
-var HueSliderWidget = require('./HueSliderWidget.jsx');
+import React from 'react';
+import PropTypes from 'prop-types';
+import HueSliderWidget from './HueSliderWidget.jsx';
 
-var HueSlider = React.createClass({
-    propTypes: {
-        color: React.PropTypes.array.isRequired,
-        handleChange: React.PropTypes.func.isRequired,
-        sliderLength: React.PropTypes.number.isRequired
-    },
-    getDefaultProps: function() {
-        return { sliderLength: 306 };
-    },
-    render: function() {
-        var { color, handleChange, sliderLength } = this.props;
+export default class HueSlider extends React.Component {
+    constructor(props) {
+        super(props);
+    }
+
+    render() {
+        const { color, handleChange, sliderLength } = this.props;
         return (
             <div className="hue-slider">
               <HueSliderWidget handleChange={handleChange} color={color} limit={sliderLength} />
             </div>
         );
     }
-});
+}
 
-module.exports = HueSlider;
+HueSlider.propTypes = {
+    color: PropTypes.array.isRequired,
+    handleChange: PropTypes.func.isRequired,
+    sliderLength: PropTypes.number.isRequired
+};
+HueSlider.defaultProp = { sliderLength: 306 };

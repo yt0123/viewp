@@ -1,15 +1,16 @@
-var React = require('react');
-var Source = require('./Source.jsx');
+import React from 'react';
+import PropTypes from 'prop-types';
+import Source from './Source.jsx';
 
-var Store = React.createClass({
-    propTypes: {
-        sources: React.PropTypes.array.isRequired,
-        actions: React.PropTypes.object.isRequired
-    },
-    render: function() {
-        var { sources, actions } = this.props;
+export default class Store extends React.Component {
+    constructor(props) {
+        super(props);
+    }
 
-        var Sources = [];
+    render() {
+        const { sources, actions } = this.props;
+
+        let Sources = [];
         for (var index in sources) {
             Sources.push(
                 <li key={index} className="store-list">
@@ -17,7 +18,7 @@ var Store = React.createClass({
                 </li>
             );
         }
-        var styles = sources.length > 0 ? { display: 'none' } : { display: 'block' } ;
+        const styles = sources.length > 0 ? { display: 'none' } : { display: 'block' } ;
 
         return (
             <ul className="manager-store">
@@ -26,6 +27,9 @@ var Store = React.createClass({
             </ul>
         );
     }
-});
+}
 
-module.exports = Store;
+Store.propTypes = {
+    sources: PropTypes.array.isRequired,
+    actions: PropTypes.object.isRequired
+};

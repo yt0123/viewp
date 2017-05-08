@@ -1,28 +1,34 @@
-var React = require('react');
-var Validation = require('../../constants/Validation.js');
+import React from 'react';
+import PropTypes from 'prop-types';
+import Validation from '../../constants/Validation.js';
 
-var Load = React.createClass({
-    propTypes: {
-        actions: React.PropTypes.object.isRequired
-    },
-    handleClick: function(ev) {
-        var { loader } = this.refs;
-        var evt = new MouseEvent('click', { view: window, bubbles: true, cancelable: true });
+export default class Load extends React.Component{
+    constructor(props) {
+        super(props);
+        this.handleClick = this.handleClick.bind(this);
+        this.handleChange = this.handleChange.bind(this);
+    }
+
+    handleClick(ev) {
+        const { loader } = this.refs;
+        const evt = new MouseEvent('click', { view: window, bubbles: true, cancelable: true });
         loader.dispatchEvent(evt);
-    },
-    handleChange: function(ev) {
-        var { actions } = this.props;
-        var file = ev.target.files[0];
-        var reader = new FileReader();
+    }
+
+    handleChange(ev) {
+        const { actions } = this.props;
+        const file = ev.target.files[0];
+        const reader = new FileReader();
         reader.onload = function(ev) {
-            var format = new Validation(reader.result);
+            const format = new Validation(reader.result);
             actions.addSource(file.name, format.getResult(), format.getProperties());
         };
         reader.readAsText(file, 'UTF-8');
         ev.target.value = '';
-    },
-    render: function() {
-        var styles = { display: 'none' };
+    }
+
+    render() {
+        const styles = { display: 'none' };
         return (
             <div className="manager-load">
               <span onClick={this.handleClick}>Source Add +</span>
@@ -30,6 +36,8 @@ var Load = React.createClass({
             </div>
         );
     }
-});
+}
 
-module.exports = Load;
+Load.propTypes = {
+    actions: PropTypes.object.isRequired
+};

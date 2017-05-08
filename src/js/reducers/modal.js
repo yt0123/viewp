@@ -1,6 +1,6 @@
-var ActionTypes = require('../constants/ActionTypes');
+import ActionTypes from '../constants/ActionTypes';
 
-var modal = function(state = false, action) {
+const modal = function(state = false, action) {
     switch (action.type) {
 
     case ActionTypes.CHANGE_MODAL:
@@ -12,4 +12,4 @@ var modal = function(state = false, action) {
     }
 };
 
-module.exports = modal;
+export default modal;

@@ -1,24 +1,21 @@
-var React = require('react');
+import React from 'react';
+import PropTypes from 'prop-types';
 
-var PickerWidget = React.createClass({
-    propTypes: {
-        color: React.PropTypes.array.isRequired,
-        bind: React.PropTypes.string.isRequired,
-        limitX: React.PropTypes.number.isRequired,
-        limitY: React.PropTypes.number.isRequired,
-        handleChange: React.PropTypes.func.isRequired
-    },
-    getInitialState: function() {
-        return {
-            x: this.props.limitX, y: 0,
+export default class PickerWidget extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            x: props.limitX, y: 0,
             widgetX: null, widgetY: null
         };
-    },
-    handleDnD: function(event) {
-        var self = this;
-        var { handleChange, limitX, limitY } = this.props;
-        var { x, y, widgetX, widgetY } = this.state;
-        var { widget } = this.refs;
+        this.handleDnD = this.handleDnD.bind(this);
+    }
+
+    handleDnD(event) {
+        const self = this;
+        const { handleChange, limitX, limitY } = this.props;
+        const { x, y, widgetX, widgetY } = this.state;
+        const { widget } = this.refs;
 
         switch(event.type) {
 
@@ -29,8 +26,8 @@ var PickerWidget = React.createClass({
 
         case 'mousemove':
             event.preventDefault();
-            var nextX = event.pageX - widgetX;
-            var nextY = event.pageY - widgetY;
+            let nextX = event.pageX - widgetX;
+            let nextY = event.pageY - widgetY;
             if (nextX > x) {
                 nextX = nextX > limitX ? limitX : nextX;
             } else if (nextX < x){
@@ -59,22 +56,30 @@ var PickerWidget = React.createClass({
             break;
 
         }
-    },
-    componentWillUpdate: function(nextProps, nextState) {
-        var { bind, handleChange } = this.props;
-        var { x, y } = this.state;
+    }
+
+    componentWillUpdate(nextProps, nextState) {
+        const { bind, handleChange } = this.props;
+        const { x, y } = this.state;
         if (x !== nextState.x || y !== nextState.y || bind !== nextProps.bind) {
             handleChange(nextState.x, nextState.y);
         }
-    },
-    render: function() {
-        var { color } = this.props;
-        var { x, y } = this.state;
-        var style = { backgroundColor: 'rgb(' + color.join(',') + ')', left: x + 'px', top: y + 'px' };
+    }
+
+    render() {
+        const { color } = this.props;
+        const { x, y } = this.state;
+        const style = { backgroundColor: 'rgb(' + color.join(',') + ')', left: x + 'px', top: y + 'px' };
         return (
             <div ref="widget" className="colormap-widget" onMouseDown={this.handleDnD} style={style}></div>
         );
     }
-});
+}
 
-module.exports = PickerWidget;
+PickerWidget.propTypes = {
+    color: PropTypes.array.isRequired,
+    bind: PropTypes.string.isRequired,
+    limitX: PropTypes.number.isRequired,
+    limitY: PropTypes.number.isRequired,
+    handleChange: PropTypes.func.isRequired
+};

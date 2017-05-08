@@ -1,16 +1,16 @@
-var React = require('react');
-var AppLogo = require('./applogo.jsx');
-var AppSetting = require('./appsetting.jsx');
-var AppManager = require('./appmanager.jsx');
+import React from 'react';
+import PropTypes from 'prop-types';
+import AppLogo from './applogo.jsx';
+import AppSetting from './appsetting.jsx';
+import AppManager from './appmanager.jsx';
 
-var Header = React.createClass({
-    propTypes: {
-        visibility: React.PropTypes.bool.isRequired,
-        modal: React.PropTypes.bool.isRequired,
-        actions: React.PropTypes.object.isRequired
-    },
-    render: function() {
-        var { visibility, modal, actions } = this.props;
+export default class Header extends React.Component {
+    constructor(props) {
+        super(props);
+    }
+
+    render() {
+        const { visibility, modal, actions } = this.props;
         return (
             <div className="header">
               <div className="headerContents linearContainer">
@@ -21,26 +21,10 @@ var Header = React.createClass({
             </div>
         );
     }
-});
+}
 
-module.exports = Header;
-
-/*
- * class Header extends React.Component {
- *     constructor(props) {
- *         super(props)
- *     }
- *     render() {
- *         const { visibility, modal, actions } = this.props;
- *         return (
- *             <div className="header">
- *               <div className="headerContents linearContainer">
- *                 <AppLogo />
- *                 <AppSetting modal={modal} actions={actions} />
- *                 <AppManager visibility={visibility} actions={actions} />
- *               </div>
- *             </div>
- *         );
- *     }
- * }
- */
+Header.propTypes = {
+    visibility: PropTypes.bool.isRequired,
+    modal: PropTypes.bool.isRequired,
+    actions: PropTypes.object.isRequired
+};
