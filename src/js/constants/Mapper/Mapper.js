@@ -1,11 +1,12 @@
 import ol from 'openlayers';
 import ActionTypes from '../Actiontypes';
-import * as Extensions from './Extensions';
 import { PropViewControl, PropViewAllControl, RefreshControl } from './Control';
 import { PropInteraction } from './Interaction';
+import Config from './MapConfig';
+import Factory from './MapFactory';
 
 export default class Map {
-    constructor(DOMtarget, config) {
+    constructor(DOMtarget) {
         this.raster = new ol.source.XYZ({
             urls: [
                 'https://a.tile.openstreetmap.org/{z}/{x}/{y}.png',
@@ -56,12 +57,12 @@ export default class Map {
             newFeatures.forEach(function(feature, index, array) { feature.setId(index); });
             if (!accessLayer) { accessLayer = this.map.getLayers().getArray()[action.index+1]; }
             accessLayer.setSource(new ol.source.Vector({ features: newFeatures, format: sourceFormat }));
-            accessLayer.setStyle(Extensions.createStyleFunction(newSource.color, 0.5, newSource.extra));
-            Extensions.createPropFunction(action.index, newSource.extra);
+            accessLayer.setStyle(Factory.styleFunction);
+            Factory.createPropFunction(action.index, newSource.extra);
             break;
 
         case ActionTypes.DELETE_SOURCE:
-            Extensions.deletePropFunction(action.index);
+            Factory.deletePropFunction(action.index);
             this.map.removeLayer(accessLayer);
             break;
 
@@ -82,7 +83,8 @@ export default class Map {
 
         case ActionTypes.COLOR_SOURCE:
             const newColor = action.source[action.index].color;
-            accessLayer.setStyle(Extensions.createStyleFunction(newColor, 0.5));
+            Config.setRgb(newColor);
+            accessLayer.setStyle(Factory.createStyleFunction(newColor, 0.5));
             break;
 
         default:

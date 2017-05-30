@@ -2,6 +2,7 @@ import Mapper from './Mapper/Mapper';
 import ActionTypes from './ActionTypes';
 
 export default class Bind extends Mapper {
+
     constructor(DOMtarget, state, config) {
         super(DOMtarget, config);
         this.state = state;
@@ -42,4 +43,5 @@ export default class Bind extends Mapper {
         this.state = newState;
         this.config = newConfig;
     }
+
 }
