@@ -9,8 +9,8 @@ export default class Bind extends Mapper {
         this.config = config;
     }
 
-    update(newState, newConfig) {
-        const action = { type: null, index: null, source: newState, config: newConfig };
+    changeNotice(newState) {
+        const action = { type: null, index: null, source: newState };
         if (newState.length > this.state.length) {
             action.type = ActionTypes.ADD_SOURCE, action.index = newState.length - 1;
         } else if (newState.length < this.state.length) {
@@ -27,21 +27,23 @@ export default class Bind extends Mapper {
                 }
             }
         }
-        if (!action.type) {
-            for (let key in newConfig) {
-                if (newConfig.alpha.toString() !== this.config.alpha.toString()) {
-                    action.type = ActionTypes.CHANGE_ALPHA;
-                    this.change(action);
+        this.state = newState;
+        this.change(action)
+    }
+
+    updateNotice(newConfig) {
+        const action = { type: null, index: null, config: newConfig }
+        for (let key in newConfig) {
+            if (newConfig.alpha.toString() !== this.config.alpha.toString()) {
+                action.type = ActionTypes.CHANGE_ALPHA;
+                this.change(action);
             } else if (newConfig.strokeColor.toString() !== this.config.strokeColor.toString()) {
-                action.type = ActionTypes.CHANGE_STROKE_COLOR;
+                    action.type = ActionTypes.CHANGE_STROKE_COLOR;
                 this.change(action);
             }
-            }
-        } else {
-            this.change(action);
-        }
-        this.state = newState;
+        } 
         this.config = newConfig;
+        this.update(action)
     }
 
 }

@@ -17,7 +17,8 @@ export default class Map extends React.Component {
     componentDidUpdate(prevProps, prevState) {
         const { sources, config } = this.props;
         console.log(sources, config);
-        map.update(sources, config);
+        map.change(sources);
+        map.update(config);
     }
 
     render() {
