@@ -1,33 +1,17 @@
-import Append from './Append';
+class Appender {
+    constructor() {}
 
-export default class Appender {
+    append() {}
+}
 
-    constructor() {
-        this.appenders = aruguments.length > 0 ? aruguments : [ Append.CONSOLE ];
-    }
+export default class ConsoleAppender extends Appender {
 
-    setAppender(appender) {
-        this.appenders.push(appender);
-    }
-
-    delAppeder(appender) {
-        this.appenders.pop();
+    constructor(appenderName) {
+        this.appenderName = appenderName || 'Console';
     }
 
     append(output, level) {
-        for (let id in this.appenders) {
-            if (id == Append.CONSOLE) {
-                this.console(output, level);
-            }
-            else if (id == Append.FILE) {
-                this.file(output, level);
-            }
-        }
-        return null;
-    }
-
-    console(output, level) {
-        switch(level) {
+         switch(level) {
             case Level.DEBUG:
                 console.debug(output);
                 break;
@@ -47,21 +31,6 @@ export default class Appender {
                 break;
         }
         return null;
-    }
-
-    file(output, level) {
-        const blob = new Blob([ output ], { "type" : "text/plain" });
-        return null;
-    }
-
-}
-
-class ConsoleAppeder {
-
-    constructor() {
-    }
-
-    append() {
     }
 
 }

@@ -44,6 +44,7 @@ export default class Map {
                 minzoom: 10
             })
         });
+        this.logger = logging.getLogger('Map');
     }
 
     change(action) {
@@ -76,7 +77,7 @@ export default class Map {
             accessLayer.getSource().getFeatures().forEach(function(feature, index, array) {
                 var props = feature.getProperties();
                 if (newStaple in props) {
-                    console.log(props[newStaple]);
+                    this.logger.log(props[newStaple]);
                 }
             });
             break;
@@ -96,7 +97,7 @@ export default class Map {
         switch (action.type) {
         case ActionTypes.CHANGE_ALPHA:
             const newAlpha = action.config.alpha;
-            console.log(newAlpha);
+            this.logger.log(newAlpha);
             break;
 
         default:

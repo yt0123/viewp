@@ -1,14 +1,13 @@
 import Level from './Level';
-import Appender from './Appender';
 import Formatter from './Formatter';
 
 class Logger {
 
-    constructor(loggerName, loggerLevel, loggerAppend, loggerFormat) {
+    constructor(loggerName, loggerLevel, loggerFormater, loogerAppenders) {
         this.name = loggerName;
         this.level = loggerLevel;
-        this.appender = new Appender(loggerName, loggerAppend)
-        this.formatter = new Formatter(loggerName, loggerFormat);
+        this.formatter = loggerFormatter;
+        this.appenders = loggerAppenders;
     }
 
     setLevel(newLoggerLevel) {
@@ -16,15 +15,27 @@ class Logger {
         return null;
     }
 
-    setStyle(newLoggerStyle) {
-        this.style = newLoggerStyle;
+    setFormatter(newLoggerFormatter) {
+        this.formatter = newLoggerFormatter;
+        return null;
+    }
+
+    setAppeder(newLoggerAppender) {
+        this.appenders.push(newLoggerAppender);
+        return null;
+    }
+
+    delAppender() {
+        this.appenders.pop();
         return null;
     }
 
     debug(message) {
         if (this.level >= 1) {
             const debugMessage = this.formatter.format(message, Level.DEBUG, new Date());
-            this.appender.append(debugMessage, Level.DEBUG);
+            for (let appenderId in this.appenders) {
+                this.appenders[appenderId].append(debugMessage, Level.DEBUG);
+            }
         }
         return null;
     }
@@ -32,7 +43,9 @@ class Logger {
     info(message) {
         if (this.level >= 2) {
             const infoMeassge = this.formatter.format(message, Level.INFO, new Date());
-            this.appender.append(infoMessage, Level.INFO);
+            for (let appenderId in this.appenders) {
+                this.appenders[appenderId].append(infoMessage, Level.INFO);
+            }
         }
         return null;
     }
@@ -40,7 +53,9 @@ class Logger {
     log(message) {
         if (this.level >= 3) {
             const logMeassge = this.formatter.format(message, Level.LOG, new Date());
-            this.appender.append(logMessage, Level.LOG);
+            for (let appenderId in this.appenders) {
+                this.appenders[appenderId].append(logMessage, Level.LOG);
+            }
         }
         return null;
     }
@@ -48,7 +63,9 @@ class Logger {
     warn(message) {
         if (this.level >= 4) {
             const warnMeassge = this.formatter.format(message, Level.WARN, new Date());
-            this.appender.append(warnMessage, Level.WARN);
+            for (let appenderId in this.appenders) {
+                this.appenders[appenderId].append(warnMessage, Level.WARN);
+            }
         }
         return null;
     }
@@ -56,7 +73,9 @@ class Logger {
     error(message) {
         if (this.level >= 5) {
             const errorMeassge = this.formatter.format(message, Level.ERROR, new Date());
-            this.appender.append(errorMessage, Level.ERROR);
+            for (let appenderId in this.appenders) {
+                this.appenders[appenderId].append(errorMessage, Level.ERROR);
+            }
         }
         return null;
     }

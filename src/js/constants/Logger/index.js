@@ -1,20 +1,19 @@
 import Logger from './Logger';
 import Level from './Level';
 import Appender from './Appender';
-import Appende from './Append';
 import Formatter from './Formatter';
 
-export default class Logging {
+class Logging {
 
-    costructor(defaultLevel, defaultAppeder, defaultFormat) {
+    costructor(defaultLevel, defaultFormat, defaultAppenders) {
         this.loggers = {};
         this.defaultLevel = defaultLevel && Level.RUN;
-        this.defaultAppender = defaultAppender && [ new ConsoleAppender() ];
         this.defaultFormatter = defaultFormatter && new Formatter();
+        this.defaultAppenders = defaultAppenders && [ new Appender.ConsoleAppender() ];
     }
 
     getLogger(loggerName) {
-        const logger = new Logger(loggerName, this.defaultLevel, this.defaultAppender, this.defaultFormat);
+        const logger = new Logger(loggerName, this.defaultLevel, this.defaultFormatter, this.defaultAppenders);
         this.loggers[loggerName] = logger;
         return logger;
     }
@@ -24,14 +23,21 @@ export default class Logging {
         return null;
     }
 
-    setConfigAppend(newLoggingAppender) {
-        this.defaultAppender = newLoggingAppender;
+    setConfigFormatter(newLoggingFormatter) {
+        this.defaultFormatter = newLoggingFormatter;
         return null;
     }
 
-    setConfigStyle(newLoggerStyle) {
-        this.defaultStyle = newLoggingStyle;
+    setConfigAppender(newLoggingAppender) {
+        this.defaultAppenders.push(newLoggingAppender);
+        return null;
+    }
+
+    delConfigAppender() {
+        this.defaultAppenders.pop();
         return null;
     }
 
 }
+
+export default new Logging();
