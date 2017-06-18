@@ -4,6 +4,7 @@ import { PropViewControl, PropViewAllControl, RefreshControl } from './Control';
 import { PropInteraction } from './Interaction';
 import Config from './MapConfig';
 import Factory from './MapFactory';
+import LogManager from '../Logger';
 
 export default class Map {
     constructor(DOMtarget) {
@@ -44,10 +45,10 @@ export default class Map {
                 minzoom: 10
             })
         });
-        this.logger = logging.getLogger('Map');
+        this.logger = LogManager.getLogger('ty.edelweiss.viewp.Map');
     }
 
-    change(action) {
+    change(action, source) {
         let accessLayer = this.map.getLayers().getArray()[action.index+1];
         switch (action.type) {
         case ActionTypes.ADD_SOURCE:
@@ -93,7 +94,7 @@ export default class Map {
         }
     }
 
-    update(action) {
+    update(action, config) {
         switch (action.type) {
         case ActionTypes.CHANGE_ALPHA:
             const newAlpha = action.config.alpha;

@@ -1,36 +1,20 @@
-class Appender {
-    constructor() {}
+import Logger from './Logger';
+import Level from './Level';
 
-    append() {}
-}
-
-export default class ConsoleAppender extends Appender {
+export default class Appender {
 
     constructor(appenderName) {
         this.appenderName = appenderName || 'Console';
+        this.consoleLog = console.log.bind(console);
     }
 
-    append(output, level) {
-         switch(level) {
-            case Level.DEBUG:
-                console.debug(output);
-                break;
-            case Level.INFO:
-                console.info(output);
-                break;
-            case Level.LOG:
-                console.log(output);
-                break;
-            case Level.WARN:
-                console.warn(output);
-                break;
-            case Level.ERROR:
-                console.error(output);
-                break;
-            default:
-                break;
-        }
-        return null;
+    setAppenderName(newAppenderName) {
+        this.appenderName = newAppenderName;
+        return this;
+    }
+
+    append(message, level) {
+       this.consoleLog(message);
     }
 
 }

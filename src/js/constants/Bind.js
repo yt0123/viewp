@@ -1,4 +1,4 @@
-import Mapper from './Mapper/Mapper';
+import Mapper from './Mapper';
 import ActionTypes from './ActionTypes';
 
 export default class Bind extends Mapper {
