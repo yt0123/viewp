@@ -7,3 +7,4 @@ This tool depends on the following framework.
 - react
 - redux
 - electron
+- openlayers
