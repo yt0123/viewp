@@ -3,11 +3,12 @@ import LogManager from '../Logger';
 
 class Config {
 
-    constructor(rgb, alphaRange, strokeColor, outlineColor) {
+    constructor(rgb, alphaRange, strokeColor, textScale, outlineColor) {
         this.rgb = rgb;
         this.alpha = (alphaRange[0] + alphaRange[1]) / 2.0;
         this.alphaRange = alphaRange;
         this.strokeColor = strokeColor;
+        this.textScale = textScale;
         this.outlineColor = outlineColor;
         this.rgba = 'rgba(%rgb, %alpha)';
         this.logger = LogManager.getLogger('ty.edelweiss.viewp.Config');
@@ -28,13 +29,19 @@ class Config {
 
     setStrokeColor(newStrokeColor) {
         this.strokeColor = newStrokeColor;
-        this.logger.log('Map config data replace storoke-color to ' + newAlpha.join(', '));
+        this.logger.log('Map config data replace storoke-color to ' + newStrokeColor.join(', '));
+        return this;
+    }
+
+    setTextScale(newTextScale) {
+        this.textScale = newTextScale;
+        this.logger.log('Map config data replace text-scale to ' + newTextScale);
         return this;
     }
 
     setOutlineColor(newOutlineColor) {
         this.outlineColor = newOutlineColor;
-        this.logger.log('Map config data replace outline-color to ' + newAlpha.join(', '));
+        this.logger.log('Map config data replace outline-color to ' + newOutlineColor.join(', '));
         return this;
     }
 
@@ -50,12 +57,22 @@ class Config {
         return colorFormat;
     }
 
+    text() {
+        const rgbFormat = this.rgb.join(', ');
+        const colorFormat = this.rgba.replace('%rgb', rgbFormat).replace('%alpha', 1.0);
+        return colorFormat;
+    }
+
+    scale() {
+        return this.textScale;
+    }
+
     outline() {
         const outlineFormat = this.outlineColor.join(', ');
-        const colorFormat = this.rgba.replace('%rgb', outlineFormat).replace('%alpha', this.alpha);
+        const colorFormat = this.rgba.replace('%rgb', outlineFormat).replace('%alpha', 1.0);
         return colorFormat;
     }
 
 }
 
-export default new Config(AppDefaults.rgb, AppDefaults.alphaRange, AppDefaults.strokeColor, AppDefaults.outlineColor);
+export default new Config(AppDefaults.rgb, AppDefaults.alphaRange, AppDefaults.strokeColor, AppDefaults.textScale, AppDefaults.outlineColor);

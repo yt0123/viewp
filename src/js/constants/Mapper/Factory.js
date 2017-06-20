@@ -15,8 +15,9 @@ const Factory = {
             }),
             text: new ol.style.Text({
                 textAlign: 'center',
-                fill: new ol.style.Fill({color: Config.fill()}),
-                stroke: new ol.style.Stroke({color: Config.fill(), width: 2})
+                scale: Config.scale(),
+                fill: new ol.style.Fill({color: Config.text()}),
+                stroke: new ol.style.Stroke({color: Config.outline(), width: 2})
             })
         });
         return style;
@@ -34,8 +35,7 @@ const Factory = {
             });
             element.appendChild(list);
         }
-    },
-    alphaFunction: function(feature) {}
+    }
 };
 
 export default Factory;

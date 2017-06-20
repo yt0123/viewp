@@ -53,6 +53,12 @@ const Actions = {
             data
         };
     },
+    changeTextScale: function(data) {
+        return {
+            type: ActionTypes.CHANGE_TEXTSCALE,
+            data
+        };
+    },
     changeOutlineColor: function(data) {
         return {
             type: ActionTypes.CHANGE_OUTLINECOLOR,

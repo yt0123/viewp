@@ -113,6 +113,27 @@ class Map {
                 accessLayers.forEach(function(elm, index) { elm.getSource().changed(); });
                 break;
 
+            case ActionTypes.CHANGE_STROKECOLOR:
+                const newStrokeColor = config.strokeColor;
+                Config.setStrokeColor(newStrokeColor);
+                this.logger.log('Change stroke-color value range to ' + newStrokeColor.join(', '));
+                accessLayers.forEach(function(elm, index) { elm.getSource().changed(); });
+                break;
+
+            case ActionTypes.CHANGE_TEXTSCALE:
+                const newTextScale = config.textScale;
+                Config.setTextScale(newTextScale);
+                this.logger.log('Change text-scale value range to ' + newTextScale);
+                accessLayers.forEach(function(elm, index) { elm.getSource().changed(); });
+                break;
+
+            case ActionTypes.CHANGE_OUTLINECOLOR:
+                const newOutlineColor = config.outlineColor;
+                Config.setOutlineColor(newOutlineColor);
+                this.logger.log('Change outline-color value range to ' + newOutlineColor.join(', '));
+                accessLayers.forEach(function(elm, index) { elm.getSource().changed(); });
+                break;
+
             default:
                 return null;
         }

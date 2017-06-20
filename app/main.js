@@ -17,7 +17,7 @@ app.on('ready', function() {
     mainWindow = new BrowserWindow({ width: 900, height: 800 });
     mainWindow.loadURL('file://' + __dirname + '/index.html');
 
-    mainWindow.openDevTools();
+    //mainWindow.openDevTools();
 
     ipc.on('startup', function(event, payload) {
         switch (payload) {

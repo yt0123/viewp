@@ -12,6 +12,9 @@ const config = function (state = AppDefaults, action) {
         case ActionTypes.CHANGE_STROKECOLOR:
             return Object.assign({}, state, { strokeColor: action.data });
 
+        case ActionTypes.CHANGE_TEXTSCALE:
+            return Object.assign({}, state, { textScale: action.data });
+
         case ActionTypes.CHANGE_OUTLINECOLOR:
             return Object.assign({}, state, { outlineColor: action.data });
 

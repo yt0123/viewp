@@ -1,12 +1,16 @@
 import ol from 'openlayers';
 import ActionTypes from '../Actiontypes';
 import Properties from './Properties';
+import Factory from './Factory';
+
+let activateCache = [];
 
 const PropViewControl = function(opt_options) {
     const options = opt_options || {};
     const lists = document.createElement('ul');
     lists.classList.add('properties');
     lists.innerHTML = '<li id=\'0\' value>none</li>';
+    const self = this;
     lists.firstElementChild.addEventListener('click', function(ev) {
         document.getElementsByClassName('target-property')[0].innerHTML = this.innerHTML;
         document.getElementsByClassName('properties')[0].classList.remove('active');
@@ -35,7 +39,6 @@ const PropViewControl = function(opt_options) {
 ol.inherits(PropViewControl, ol.control.Control);
 
 const PropViewAllControl = function(opt_options) {
-    let activateCache = [];
     const options = opt_options || {};
     const button = document.createElement('button');
     button.classList.add('all-property');
@@ -55,7 +58,7 @@ const PropViewAllControl = function(opt_options) {
                 for (let i = accessLayers.length-1; i > 0; i--) { accessLayers[i].setStyle(activateCache.pop()); }
             }
             allProp.firstElementChild.setAttribute('src', 'dest/img/search-icon-out.png');
-        } else {
+        } else if (target !== 'none') {
             allProp.classList.add('active');
             for (let i = 1; i < accessLayers.length; i++) {
                 const styleFunction = accessLayers[i].getStyle();
@@ -70,6 +73,9 @@ const PropViewAllControl = function(opt_options) {
                 activateCache.push(styleFunction);
                 accessLayers[i].setStyle(targetFunction);
             }
+            allProp.firstElementChild.setAttribute('src', 'dest/img/search-icon-in.png');
+        } else {
+            allProp.classList.add('active');
             allProp.firstElementChild.setAttribute('src', 'dest/img/search-icon-in.png');
         }
     };
