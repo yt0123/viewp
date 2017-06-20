@@ -33,7 +33,7 @@ export default class Source extends React.Component {
 
     render() {
         const { source, actions } = this.props;
-        const staples = source.extra[0].map(function(elm, index) { return <option key={index}>{elm}</option>; });
+        const staples = source.extra['category'].map(function(elm, index) { return <option key={index}>{elm}</option>; });
         return (
             <span className="source-wrapper">
               <span className="source-statebox widgetLeft">

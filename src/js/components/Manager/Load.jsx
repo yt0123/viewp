@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Validation from '../../constants/Validation.js';
+import Validator from '../../constants/Validator.js';
+import { treeSearch } from '../../constants/Search.js';
 
 export default class Load extends React.Component{
     constructor(props) {
@@ -20,8 +21,11 @@ export default class Load extends React.Component{
         const file = ev.target.files[0];
         const reader = new FileReader();
         reader.onload = function(ev) {
-            const format = new Validation(reader.result);
-            actions.addSource(file.name, format.getResult(), format.getProperties());
+            const validator = new Validator().done(reader.result);
+            const sourceObj = validator.getResult();
+            if (validator.getCertificate()) {
+                actions.addSource(file.name, sourceObj, treeSearch(sourceObj.features[0].properties));
+            }
         };
         reader.readAsText(file, 'UTF-8');
         ev.target.value = '';

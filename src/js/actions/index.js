@@ -35,9 +35,27 @@ const Actions = {
             data
         };
     },
-    changeAlpha: function(data) {
+    changeRgb: function(data) {
         return {
-            type: ActionTypes.CHANGE_ALPHA,
+            type: ActionTypes.CHANGE_RGB,
+            data
+        };
+    },
+    changeAlphaRange: function(data) {
+        return {
+            type: ActionTypes.CHANGE_ALPHARANGE,
+            data
+        };
+    },
+    changeStrokeColor: function(data) {
+        return {
+            type: ActionTypes.CHANGE_STROKECOLOR,
+            data
+        };
+    },
+    changeOutlineColor: function(data) {
+        return {
+            type: ActionTypes.CHANGE_OUTLINECOLOR,
             data
         };
     },

@@ -2,12 +2,14 @@ import ol from 'openlayers';
 import ActionTypes from '../Actiontypes';
 import { PropViewControl, PropViewAllControl, RefreshControl } from './Control';
 import { PropInteraction } from './Interaction';
-import Config from './MapConfig';
-import Factory from './MapFactory';
+import Config from './Config';
+import Factory from './Factory';
+import Properties from './Properties';
 import LogManager from '../Logger';
 
-export default class Map {
-    constructor(DOMtarget) {
+class Map {
+    constructor() {
+        this.map = null;
         this.raster = new ol.source.XYZ({
             urls: [
                 'https://a.tile.openstreetmap.org/{z}/{x}/{y}.png',
@@ -15,6 +17,10 @@ export default class Map {
                 'https://c.tile.openstreetmap.org/{z}/{x}/{y}.png'
             ]
         });
+        this.logger = LogManager.getLogger('ty.edelweiss.viewp.Map');
+    }
+
+    fetch(DOMtarget) {
         this.map = new ol.Map({
             target: DOMtarget,
             layers: [
@@ -45,64 +51,72 @@ export default class Map {
                 minzoom: 10
             })
         });
-        this.logger = LogManager.getLogger('ty.edelweiss.viewp.Map');
+        return this;
     }
 
-    change(action, source) {
-        let accessLayer = this.map.getLayers().getArray()[action.index+1];
+    change(action, sources) {
+        let accessLayer = this.map.getLayers().getArray()[action.id + 1];
         switch (action.type) {
-        case ActionTypes.ADD_SOURCE:
-            this.map.addLayer(new ol.layer.Vector());
-            const newSource = action.source[action.index];
-            const sourceFormat = new ol.format.GeoJSON({ dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857' });
-            const newFeatures = sourceFormat.readFeatures(newSource.body);
-            newFeatures.forEach(function(feature, index, array) { feature.setId(index); });
-            if (!accessLayer) { accessLayer = this.map.getLayers().getArray()[action.index+1]; }
-            accessLayer.setSource(new ol.source.Vector({ features: newFeatures, format: sourceFormat }));
-            accessLayer.setStyle(Factory.styleFunction);
-            Factory.createPropFunction(action.index, newSource.extra);
-            break;
+            case ActionTypes.ADD_SOURCE:
+                this.map.addLayer(new ol.layer.Vector());
+                const newSource = sources[sources.length - 1];
+                this.logger.log('Add new source to map ' + newSource);
+                const sourceFormat = new ol.format.GeoJSON({ dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857' });
+                const newFeatures = sourceFormat.readFeatures(newSource.body);
+                newFeatures.forEach(function(feature, index, array) { feature.setId(index); });
+                if (!accessLayer) { accessLayer = this.map.getLayers().getArray()[sources.length]; }
+                accessLayer.setSource(new ol.source.Vector({ features: newFeatures, format: sourceFormat }));
+                accessLayer.setStyle(Factory.styleFunction);
+                Properties.setValue(newSource.extra);
+                Factory.updatePropFunction();
+                break;
 
-        case ActionTypes.DELETE_SOURCE:
-            Factory.deletePropFunction(action.index);
-            this.map.removeLayer(accessLayer);
-            break;
+            case ActionTypes.DELETE_SOURCE:
+                Properties.delValue(action.id)
+                Factory.updatePropFunction();
+                this.map.removeLayer(accessLayer);
+                break;
 
-        case ActionTypes.CHECK_SOURCE:
-            const newInvalid = action.source[action.index].invalid;
-            accessLayer.setVisible(!newInvalid);
-            break;
+            case ActionTypes.CHECK_SOURCE:
+                const newInvalid = sources[action.id].invalid;
+                accessLayer.setVisible(!newInvalid);
+                break;
 
-        case ActionTypes.STAPLE_SOURCE:
-            const newStaple = action.source[action.index].staple;
-            accessLayer.getSource().getFeatures().forEach(function(feature, index, array) {
-                var props = feature.getProperties();
-                if (newStaple in props) {
-                    this.logger.log(props[newStaple]);
-                }
-            });
-            break;
+            case ActionTypes.STAPLE_SOURCE:
+                const newStaple = sources[action.id].staple;
+                accessLayer.getSource().getFeatures().forEach(function(feature, index, array) {
+                    const props = feature.getProperties();
+                    if (newStaple in props) {
+                        this.logger.log('Add new staple to source ' +  action.id + ' ' + props[newStaple]);
+                    }
+                });
+                break;
 
-        case ActionTypes.COLOR_SOURCE:
-            const newColor = action.source[action.index].color;
-            Config.setRgb(newColor);
-            accessLayer.setStyle(Factory.createStyleFunction(newColor, 0.5));
-            break;
+            case ActionTypes.COLOR_SOURCE:
+                const newColor = sources[ation.id].color;
+                Config.setRgb(newColor);
+                accessLayer.setStyle(Factory.createStyleFunction(newColor, 0.5));
+                break;
 
-        default:
-            return;
+            default:
+                return null;
         }
     }
 
     update(action, config) {
+        let accessLayers = this.map.getLayers().getArray();
         switch (action.type) {
-        case ActionTypes.CHANGE_ALPHA:
-            const newAlpha = action.config.alpha;
-            this.logger.log(newAlpha);
-            break;
+            case ActionTypes.CHANGE_ALPHARANGE:
+                const newAlphaRange = config.alphaRange;
+                Config.setAlphaRange(newAlphaRange);
+                this.logger.log('Change alpha value range to ' + newAlphaRange.join(', '));
+                accessLayers.forEach(function(elm, index) { elm.getSource().changed(); });
+                break;
 
-        default:
-            return;
+            default:
+                return null;
         }
     }
 };
+
+export default new Map();

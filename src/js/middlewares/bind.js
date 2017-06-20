@@ -7,7 +7,9 @@ const bind = store => next => action => {
     logger.info('dispatching', action.type);
 
     const result = next(action)
-    //Mapper(action.type, store.getState())
+    const state = store.getState();
+    Mapper.change(action, state.sources);
+    Mapper.update(action, state.config);
     return result
 };
 

@@ -1,11 +1,12 @@
 import ol from 'openlayers';
 import ActionTypes from '../Actiontypes';
+import Properties from './Properties';
 
 const PropViewControl = function(opt_options) {
     const options = opt_options || {};
     const lists = document.createElement('ul');
     lists.classList.add('properties');
-    lists.innerHTML = '<li id=\'none\' value>none</li>';
+    lists.innerHTML = '<li id=\'0\' value>none</li>';
     lists.firstElementChild.addEventListener('click', function(ev) {
         document.getElementsByClassName('target-property')[0].innerHTML = this.innerHTML;
         document.getElementsByClassName('properties')[0].classList.remove('active');
@@ -29,12 +30,12 @@ const PropViewControl = function(opt_options) {
     ol.control.Control.call(this, {
         element: element,
         target: options.target
-        });
+    });
 };
 ol.inherits(PropViewControl, ol.control.Control);
 
 const PropViewAllControl = function(opt_options) {
-    let activeLayers = [];
+    let activateCache = [];
     const options = opt_options || {};
     const button = document.createElement('button');
     button.classList.add('all-property');
@@ -45,13 +46,13 @@ const PropViewAllControl = function(opt_options) {
     button.addEventListener('click', handlePropViewAll, false);
     const self = this;
     function handlePropViewAll(ev) {
-        var target = document.getElementsByClassName('target-property')[0].innerHTML;
-        var accessLayers = self.getMap().getLayers().getArray();
-        var allProp = document.getElementsByClassName('all-property')[0];
+        const target = document.getElementsByClassName('target-property')[0].innerHTML;
+        const accessLayers = self.getMap().getLayers().getArray();
+        const allProp = document.getElementsByClassName('all-property')[0];
         if (allProp.classList.contains('active')) {
             allProp.classList.remove('active');
-            if (activeLayers.length > 0) {
-                for (let i = accessLayers.length-1; i > 0; i--) { accessLayers[i].setStyle(activeLayers.pop()); }
+            if (activateCache.length > 0) {
+                for (let i = accessLayers.length-1; i > 0; i--) { accessLayers[i].setStyle(activateCache.pop()); }
             }
             allProp.firstElementChild.setAttribute('src', 'dest/img/search-icon-out.png');
         } else {
@@ -59,11 +60,14 @@ const PropViewAllControl = function(opt_options) {
             for (let i = 1; i < accessLayers.length; i++) {
                 const styleFunction = accessLayers[i].getStyle();
                 const targetFunction = function(feature) {
-                    var style = styleFunction(feature);
-                    style.getText().setText(feature.getProperties()[target]);
+                    const style = styleFunction(feature);
+                    const accessor = Properties.deploy(i - 1, target);
+                    let label = feature.getProperties();
+                    accessor.forEach(function (elm, index) { label = label[elm]; });
+                    style.getText().setText(String(label));
                     return style;
                 };
-                activeLayers.push(styleFunction);
+                activateCache.push(styleFunction);
                 accessLayers[i].setStyle(targetFunction);
             }
             allProp.firstElementChild.setAttribute('src', 'dest/img/search-icon-in.png');
@@ -93,7 +97,7 @@ const RefreshControl = function(opt_options) {
         self.getMap().getLayers().getArray()[0].getSource().refresh();
     };
     button.appendChild(img);
-    var element = document.createElement('div');
+    const element = document.createElement('div');
     element.className = 'refresh ol-unselectable ol-control';
     element.appendChild(button);
     ol.control.Control.call(this, {

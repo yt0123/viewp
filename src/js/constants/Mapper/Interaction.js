@@ -1,53 +1,47 @@
 import ol from 'openlayers';
 import ActionTypes from '../Actiontypes';
+import Properties from './Properties';
 
-var PropInteraction = function(opt_options) {
-    let activeLayer, activeFeature;
+const PropInteraction = function(opt_options) {
+    const activate = { layer: null, feature: null, counter: 0 };
     ol.interaction.Pointer.call(this, {
         handleMoveEvent: handlePointerMove
     });
     function handlePointerMove(ev) {
-        let counter = 0;
-        const map = ev.map;
+        activate.flag = true;
         const target = document.getElementsByClassName('target-property')[0].innerHTML;
-        const targetDepth = document.getElementById(target).getAttribute('value').split('-');
         if (!document.getElementsByClassName('all-property')[0].classList.contains('active')) {
-            var feature = map.forEachFeatureAtPixel(ev.pixel, propView);
+            const feature = ev.map.forEachFeatureAtPixel(ev.pixel, propView);
             function propView(feature) {
-                const accessLayers = map.getLayers().getArray();
-                for (var i = 1; i < accessLayers.length; i++) {
+                const accessLayers = ev.map.getLayers().getArray();
+                for (let i = 1; i < accessLayers.length; i++) {
                     const targetFunction = accessLayers[i].getStyle();
                     const targetStyle =  targetFunction(feature);
                     const targetText = targetStyle.getText();
-                    if (activeFeature && activeLayer) {
-                        if (activeFeature.getId() != feature.getId()) {
-                            activeFeature.setStyle(null);
-                            activeFeature = null;
-                            activeLayer = null;
-                            if (target != 'none') {
-                                targetText.setText(feature.getProperties()[target]);
-                                targetStyle.setText(targetText);
-                                feature.setStyle(targetStyle);
-                                activeFeature = feature;
-                                activeLayer = i;
-                            }
-                        }
-                    } else {
-                        if (target != 'none') {
-                            targetText.setText(feature.getProperties()[target]);
-                            targetStyle.setText(targetText);
-                            feature.setStyle(targetStyle);
-                            activeFeature = feature;
-                            activeLayer = i;
+                    if (activate.feature && activate.layer) {
+                        if (activate.feature.getId() !== feature.getId()) {
+                            activate.feature.setStyle(null);
+                            activate.feature = null;
+                            activate.layer = null;
                         }
                     }
+                    if (target !== 'none') {
+                        const accessor = Properties.deploy(i - 1, target);
+                        let label = feature.getProperties();
+                        accessor.forEach(function (elm, index) { label = label[elm]; });
+                        targetText.setText(String(label));
+                        targetStyle.setText(targetText);
+                        feature.setStyle(targetStyle);
+                        activate.feature = feature;
+                        activate.layer = i;
+                    }
                 }
-                counter++;
+                activate.flag = false;
             }
         }
-        if (counter == 0 && activeFeature) {
-            activeFeature.setStyle(null);
-            activeFeature = null;
+        if (activate.flag && activate.feature) {
+            activate.feature.setStyle(null);
+            activate.feature = null;
         }
     }
 };

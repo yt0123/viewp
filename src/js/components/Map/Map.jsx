@@ -1,26 +1,23 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Bind from '../../constants/Bind';
+import Mapper from '../../constants/Mapper';
 import LogManager from '../../constants/Logger';
 
 export default class Map extends React.Component {
     constructor(props) {
         super(props);
-        this.map = null;
         this.logger = LogManager.getLogger('ty.edelweiss.viewp.MapComponent');
     }
 
     componentDidMount() {
         const { sources, config } = this.props;
-        this.map = new Bind('map', sources, config);
+        Mapper.fetch('map')
     }
 
     componentDidUpdate(prevProps, prevState) {
         const { sources, config } = this.props;
-        this.logger.log(sources.);
+        this.logger.log(sources);
         this.logger.log(config);
-        this.map.change(sources);
-        this.map.update(config);
     }
 
     render() {

@@ -3,15 +3,20 @@ import AppDefaults from '../constants/AppDefaults';
 
 const config = function (state = AppDefaults, action) {
     switch (action.type) {
+        case ActionTypes.CHANGE_RGB:
+            return Object.assign({}, state, { rgb: action.data });
 
-    case ActionTypes.CHANGE_ALPHA:
-        return Object.assign({}, state, {
-            alpha: action.data
-        });
+        case ActionTypes.CHANGE_ALPHARANGE:
+            return Object.assign({}, state, { alphaRange: action.data });
 
-    default:
-        return state;
+        case ActionTypes.CHANGE_STROKECOLOR:
+            return Object.assign({}, state, { strokeColor: action.data });
 
+        case ActionTypes.CHANGE_OUTLINECOLOR:
+            return Object.assign({}, state, { outlineColor: action.data });
+
+        default:
+            return state;
     }
 };
 
