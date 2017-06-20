@@ -93,9 +93,9 @@ class Map {
                 break;
 
             case ActionTypes.COLOR_SOURCE:
-                const newColor = sources[ation.id].color;
+                const newColor = sources[action.id].color;
                 Config.setRgb(newColor);
-                accessLayer.setStyle(Factory.createStyleFunction(newColor, 0.5));
+                accessLayer.getSource().changed();
                 break;
 
             default:

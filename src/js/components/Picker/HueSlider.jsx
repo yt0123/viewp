@@ -22,4 +22,4 @@ HueSlider.propTypes = {
     handleChange: PropTypes.func.isRequired,
     sliderLength: PropTypes.number.isRequired
 };
-HueSlider.defaultProp = { sliderLength: 306 };
+HueSlider.defaultProps = { sliderLength: 306 };
