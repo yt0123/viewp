@@ -1,11 +1,31 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { DragSource } from 'react-dnd';
+import ItemTypes from '../../constants/ItemTypes';
 
+const widgetSource = {
+    beginDrag(props) {
+        return {
+            name: props.name
+        };
+    },
+
+    endDrag(props, monitor) {
+        const item = monitor.getItem();
+        const dropResult = monitor.getDropResult();
+
+        if (dropResult) {
+            console.log(item.name, dropResult.name);
+        }
+    }
+
+@DragSource(ItemTypes.HueSliderWidget, widgetSource, (connect, monitor) => ({
+    connectWidgetSource: connect.widgetSource(),
+    isDragging: monitor.isDragging()
+}))
 export default class HueSliderWidget extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { x: 0, widgetX: null };
-        this.handleDnD = this.handleDnD.bind(this);
     }
 
     handleDnD(event) {
@@ -76,5 +96,8 @@ export default class HueSliderWidget extends React.Component {
 HueSliderWidget.propTypes = {
     color: PropTypes.array.isRequired,
     limit: PropTypes.number.isRequired,
-    handleChange: PropTypes.func.isRequired
+    handleChange: PropTypes.func.isRequired,
+    connectDragSource: PropTypes.func.isRequired,
+    isDragging: PropTypes.bool.isRequired,
+    name: PropTypes.string.isRequired
 };
