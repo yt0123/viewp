@@ -3,12 +3,12 @@ import LogManager from './Logger';
 export default class Validator {
     constructor() {
         this.result = null;
-        this.certificate = false;
+        this.certification = false;
         this.logger = LogManager.getLogger('ty.edelweiss.viewp.Validator');
     }
 
-    getCertificate() {
-        return this.certificate;
+    getCertification() {
+        return this.certification;
     }
 
     getResult() {
@@ -19,10 +19,10 @@ export default class Validator {
         try {
             this.result = JSON.parse(context);
             this.logger.log('Success input source parse to object');
-            this.certificate = true;
+            this.certification = true;
         } catch(errorMessage) {
             this.logger.error(errorMessage);
-            this.certificate = false;
+            this.certification = false;
         }
         return this;
     }

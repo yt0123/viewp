@@ -19,7 +19,7 @@ export default class Body extends React.Component {
             <div className="setting-wrap">
               <div className="setting-menu">
                 <button className="setting-close" onClick={this.handleClick}>
-                  <img src="./dest/img/destroy-icon.png" width="12px" height="12px" />
+                  <img src="img/destroy-icon.png" width="12px" height="12px" />
                 </button>
                 <List config={config} actions={actions} />
               </div>

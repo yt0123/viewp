@@ -1,7 +1,7 @@
 import ol from 'openlayers';
-import ActionTypes from '../Actiontypes';
+import ActionTypes from '../ActionTypes';
 import { PropViewControl, PropViewAllControl, RefreshControl } from './Control';
-import { PropInteraction } from './Interaction';
+import { FeatureInteraction, PropInteraction } from './Interaction';
 import Config from './Config';
 import Factory from './Factory';
 import Properties from './Properties';
@@ -10,13 +10,7 @@ import LogManager from '../Logger';
 class Map {
     constructor() {
         this.map = null;
-        this.raster = new ol.source.XYZ({
-            urls: [
-                'https://a.tile.openstreetmap.org/{z}/{x}/{y}.png',
-                'https://b.tile.openstreetmap.org/{z}/{x}/{y}.png',
-                'https://c.tile.openstreetmap.org/{z}/{x}/{y}.png'
-            ]
-        });
+        this.raster = new ol.source.OSM();
         this.logger = LogManager.getLogger('ty.edelweiss.viewp.Map');
     }
 
@@ -30,8 +24,8 @@ class Map {
             ],
             controls: [
                 new ol.control.Zoom(),
-                new PropViewControl(),
-                new PropViewAllControl(),
+                new ol.control.ZoomSlider(),
+                new ol.control.Attribution(),
                 new RefreshControl()
             ],
             interactions: [
@@ -42,12 +36,21 @@ class Map {
                 new ol.interaction.KeyboardPan(),
                 new ol.interaction.KeyboardZoom(),
                 new ol.interaction.DragZoom(),
+                new FeatureInteraction(),
                 new PropInteraction()
+            ],
+            overlays: [
+                new ol.Overlay({
+                    id: 'popup',
+                    element: document.getElementById("popup"),
+                    positioning: 'bottom-center',
+                    offset: [0, -10]
+                })
             ],
             view: new ol.View({
                 center: ol.proj.transform([139.7800, 35.6800], 'EPSG:4326', 'EPSG:3857'),
                 zoom: 11,
-                maxzoom: 18,
+                maxzoom: 16,
                 minzoom: 10
             })
         });
@@ -68,12 +71,10 @@ class Map {
                 accessLayer.setSource(new ol.source.Vector({ features: newFeatures, format: sourceFormat }));
                 accessLayer.setStyle(Factory.styleFunction);
                 Properties.setValue(newSource.extra);
-                Factory.updatePropFunction();
                 break;
 
             case ActionTypes.DELETE_SOURCE:
-                Properties.delValue(action.id)
-                Factory.updatePropFunction();
+                Properties.delValue(action.id);
                 this.map.removeLayer(accessLayer);
                 break;
 
@@ -138,6 +139,6 @@ class Map {
                 return null;
         }
     }
-};
+}
 
 export default new Map();

@@ -23,7 +23,11 @@ export default class Map extends React.Component {
     render() {
         const { sources, config, actions } = this.props;
         return (
-            <div id="map" className="map">
+            <div className="map-container" style={{height: '100%', width: '100%'}}>
+                <div id="map" className="map"></div>
+                <div style={{display: 'none'}}>
+                    <div id="popup" className="arrow-box"></div>
+                </div>
             </div>
         );
     }

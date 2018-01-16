@@ -20,7 +20,7 @@ const sources = function (state = [], action) {
         case ActionTypes.DELETE_SOURCE:
             return state.filter(function(source) { return source.id !== action.id; }).map(function(source, index) {
                 return Object.assign({}, source, { id: index });
-            })
+            });
 
         case ActionTypes.CHECK_SOURCE:
             return state.map(function(source) {

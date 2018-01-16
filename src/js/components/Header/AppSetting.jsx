@@ -15,9 +15,9 @@ export default class AppSetting extends React.Component {
     render() {
         const { modal, actions } = this.props;
         return (
-            <div className="appSetting linearRight boxCenter">
+            <div className="app-setting linearRight boxCenter">
               <button type="button" className="setting-toggle" onClick={this.handleClick}>
-                <img src="dest/img/setting-icon.png" width="12px" height="12px" />
+                <img src="img/setting-icon.png" width="12px" height="12px" />
               </button>
             </div>
         );

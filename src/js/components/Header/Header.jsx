@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import AppLogo from './applogo.jsx';
-import AppSetting from './appsetting.jsx';
-import AppManager from './appmanager.jsx';
+import AppLogo from './AppLogo.jsx';
+import AppSetting from './AppSetting.jsx';
+import AppManager from './AppManager.jsx';
 
 export default class Header extends React.Component {
     constructor(props) {
@@ -13,7 +13,7 @@ export default class Header extends React.Component {
         const { visibility, modal, actions } = this.props;
         return (
             <div className="header">
-              <div className="headerContents linearContainer">
+              <div className="header-contents linearContainer">
                 <AppLogo />
                 <AppSetting modal={modal} actions={actions} />
                 <AppManager visibility={visibility} actions={actions} />
