@@ -45539,7 +45539,6 @@ var sources = function sources() {
     var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
     var action = arguments[1];
 
-    console.log(store);
     switch (action.type) {
         case __WEBPACK_IMPORTED_MODULE_0__constants_ActionTypes__["a" /* default */].ADD_SOURCE:
             return [].concat(_toConsumableArray(state), [{

@@ -2,7 +2,6 @@ import ActionTypes from '../constants/ActionTypes';
 import AppDefaults from '../constants/AppDefaults';
 
 const sources = function (state = [], action) {
-    console.log(store);
     switch (action.type) {
         case ActionTypes.ADD_SOURCE:
             return [
