@@ -2,6 +2,18 @@ $themeColor: #000080;
 $subColor: #ffffff;
 
 @font-face {
+  font-family: 'Roboto';
+  src: url('../fonts/Roboto/Roboto-Regular.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Roboto-Thin';
+  src: url('../fonts/Roboto/Roboto-Thin.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Roboto-Bold';
+  src: url('../fonts/Roboto/Roboto-Bold.ttf') format('truetype');
+}
+@font-face {
   font-family: 'OpenSans';
   src: url('../fonts/Open_Sans/OpenSans-Regular.ttf') format('truetype');
 }
@@ -15,11 +27,11 @@ $subColor: #ffffff;
 }
 @font-face {
   font-family: 'Dosis';
-  src: url('../fonts/Dosis/Dosis-Regular.ttf');
+  src: url('../fonts/Dosis/Dosis-Regular.ttf') format('truetype');
 }
 @font-face {
   font-family: 'Dosis-Bold';
-  src: url('../fonts/Dosis/Dosis-Bold.ttf');
+  src: url('../fonts/Dosis/Dosis-Bold.ttf') format('truetype');
 }
 
 @import '~openlayers/dist/ol.css';
@@ -69,6 +81,15 @@ div#root {
     min-width: 500px;
     height: 100%;
     width: 100%;
+    div.container-cover {
+      position: fixed;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 1000;
+    }
   }
 }
 div.header {
@@ -88,8 +109,7 @@ div.header {
       width: 120px;
       height: 45px;
       margin: 0 20px;
-      div.logo-box {
-      }
+      cursor: pointer;
       div.logo-img {
         width: 40px;
         height: 40px;

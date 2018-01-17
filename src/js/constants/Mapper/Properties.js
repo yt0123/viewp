@@ -1,32 +1,22 @@
+import Utils from '../Utils';
 import LogManager from '../Logger';
 
 class Properties {
     constructor() {
-        this.values = [{ category: ['none'], group: [''] }];
-        this.names = ['none'];
+        this.values = [];
+        this.limit = 100;
         this.logger = LogManager.getLogger('ty.edelweiss.veiep.Properties');
     }
 
-    _unique() {
-        let nameSet = [];
-        for (let i = 0; i < this.values.length; i++) {
-            const uniquePropertyNames = this.values[i]['category'].filter(function(elm, index) { return nameSet.indexOf(elm) === -1; });
-            nameSet = nameSet.concat(uniquePropertyNames);
-        }
-        return nameSet;
-    }
-
     setValue(newProperties) {
-        this.values.push(newProperties);
+        this.values.push(newProperties.slice(1));
         this.logger.log('Add properties take the number of ' + String(this.values.length - 1) + ' elements');
-        this.names = this._unique();
         return this;
     }
 
     delValue(propertyId) {
-        this.values.splice(propertyId + 1, 1);
+        this.values.splice(propertyId, 1);
         this.logger.log('Delete properties take the number of ' + String(this.values.length - 1) + ' elements');
-        this.names = this._unique();
         return this;
     }
 
@@ -38,16 +28,40 @@ class Properties {
         return this.values;
     }
 
-    getNames() {
-        return this.names;
+    getLimit() {
+        return this.limit;
     }
 
-    deploy(propertyId, propertyName) {
-        const index = this.values[propertyId + 1]['category'].indexOf(propertyName);
-        let properties = this.values[propertyId + 1]['group'][index].split('.');
-        if (properties[0] === '') { properties.pop(); }
-        properties.push(this.values[propertyId + 1]['category'][index]);
-        return properties;
+    fetch(propertyKey, properties) {
+        let property = '';
+        const tmpString = String(Utils.dotSearch(propertyKey, properties));
+        if (tmpString.length > this.limit) {
+            property = tmpString.slice(0, this.limit) + '...';
+        } else {
+            property = tmpString;
+        }
+        return property;
+    }
+
+    deploy(propertyId, properties) {
+        const propertyValue = this.values[propertyId];
+        let contents = '';
+        const self = this;
+        propertyValue.forEach(function(elm, index) {
+            const key = elm.name;
+            let property = '';
+            if (elm.type !== 'Object') {
+                const tmpString = String(Utils.dotSearch(elm.name, properties));
+                if (tmpString.length > self.limit) {
+                    property = tmpString.slice(0, self.limit) + '...';
+                } else {
+                    property = tmpString;
+                }
+                const lines = { key: ['[ ', key, ' ]', '<br />'], property: [property, '<br />'] };
+                contents = contents + lines.key.join('') + lines.property.join('');
+            }
+        });
+        return contents;
     }
 }
 

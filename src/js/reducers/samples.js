@@ -2,7 +2,6 @@ import ActionTypes from '../constants/ActionTypes';
 import AppDefaults from '../constants/AppDefaults';
 
 const sources = function (state = [], action) {
-    console.log(store);
     switch (action.type) {
         case ActionTypes.ADD_SOURCE:
             return [
@@ -14,7 +13,6 @@ const sources = function (state = [], action) {
                     extra: action.extra,
                     color: AppDefaults.rgb,
                     staple: 'none',
-                    sample: { scale: 'none', link: 'none' },
                     invalid: false
                 }
             ];
@@ -37,11 +35,6 @@ const sources = function (state = [], action) {
         case ActionTypes.COLOR_SOURCE:
             return state.map(function(source) {
                 return source.id === action.id ? Object.assign({}, source, { color: action.data }) : source ;
-            });
-
-        case ActionTypes.CHANGE_SOURCE:
-            return state.map(function(source) {
-                return source.id === action.id ? Object.assign({}, source, { sample: sample }) : source ;
             });
 
         default:

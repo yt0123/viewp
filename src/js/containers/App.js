@@ -14,13 +14,14 @@ class App extends React.Component {
     }
 
     render() {
-        const { sources, config, visibility, modal, actions } = this.props;
+        const { sources, config, visibility, modal, process, actions } = this.props;
         return (
             <div className="container">
-              <Header visibility={visibility} modal={modal} actions={actions} />
-              <Manager sources={sources} visibility={visibility} actions={actions} />
-              <Setting config={config} modal={modal} actions={actions} />
-              <Map sources={sources} config={config} actions={actions} />
+                <Header visibility={visibility} modal={modal} actions={actions} />
+                <Manager sources={sources} visibility={visibility} actions={actions} />
+                <Setting config={config} modal={modal} actions={actions} />
+                <Map sources={sources} config={config} actions={actions} />
+                <div className="container-cover" style={{display: process.isRunning ? 'block' : 'none'}} />
             </div>
         );
     }
@@ -31,14 +32,21 @@ App.propTypes = {
     config: PropTypes.object.isRequired,
     visibility: PropTypes.bool.isRequired,
     modal: PropTypes.bool.isRequired,
+    process: PropTypes.object.isRequired,
     actions: PropTypes.object.isRequired
 };
 
-var mapStateToProps = function(state) {
-    return { sources: state.sources, config: state.config, visibility: state.visibility, modal: state.modal };
+const mapStateToProps = function(state) {
+    return {
+        sources: state.sources,
+        config: state.config,
+        visibility: state.visibility,
+        modal: state.modal,
+        process: state.process
+    };
 };
 
-var mapDispatchToProps = function(dispatch) {
+const mapDispatchToProps = function(dispatch) {
     return { actions: bindActionCreators(Actions, dispatch) };
 };
 

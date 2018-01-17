@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Validator from '../../constants/Validator.js';
-import { treeSearch } from '../../constants/Utils.js';
+import Utils from '../../constants/Utils.js';
 
 export default class Load extends React.Component{
     constructor(props) {
@@ -24,7 +24,10 @@ export default class Load extends React.Component{
             const validator = new Validator().done(reader.result);
             const sourceObj = validator.getResult();
             if (validator.getCertification()) {
-                actions.addSource(file.name, sourceObj, treeSearch(sourceObj.features[0].properties));
+                const sourceExtra = [{ name: 'none', rank: 'n', type: 'Null' }];
+                Array.prototype.push.apply(sourceExtra, Utils.treeSearch(sourceObj.features[0].properties));
+                sourceExtra.sort((a, b) => a.rank - b.rank);
+                actions.addSource(file.name, sourceObj, sourceExtra);
             }
         };
         reader.readAsText(file, 'UTF-8');

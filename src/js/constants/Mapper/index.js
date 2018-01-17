@@ -69,7 +69,8 @@ class Map {
                 newFeatures.forEach(function(feature, index, array) { feature.setId(index); });
                 if (!accessLayer) { accessLayer = this.map.getLayers().getArray()[sources.length]; }
                 accessLayer.setSource(new ol.source.Vector({ features: newFeatures, format: sourceFormat }));
-                accessLayer.setStyle(Factory.styleFunction);
+                accessLayer.setStyle(Factory.polygonStyleFunction);
+                accessLayer.set('id_', sources.length - 1);
                 Properties.setValue(newSource.extra);
                 break;
 
@@ -85,12 +86,8 @@ class Map {
 
             case ActionTypes.STAPLE_SOURCE:
                 const newStaple = sources[action.id].staple;
-                accessLayer.getSource().getFeatures().forEach(function(feature, index, array) {
-                    const props = feature.getProperties();
-                    if (newStaple in props) {
-                        this.logger.log('Add new staple to source ' +  action.id + ' ' + props[newStaple]);
-                    }
-                });
+                accessLayer.setStyle(Factory.sampleStyleFunction(newStaple));
+                accessLayer.getSource().changed();
                 break;
 
             case ActionTypes.COLOR_SOURCE:

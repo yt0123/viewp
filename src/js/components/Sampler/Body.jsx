@@ -9,14 +9,12 @@ export default class Body extends React.Component {
 
     handleClick(ev) {
         const { handleTarget } = this.props;
-        let nextLabel = ev.target.firstChild.textContent;
-        if (!ev.target.classList.contains('sample-data')) {
-            nextLabel = ev.target.parentNode.firstChild.textContent;
+        let nextTarget = { value: ev.target.id, label: ev.target.firstChild.textContent };
+        if (!nextTarget.value) {
+            nextTarget.value = ev.target.parentNode.id;
+            nextTarget.label = ev.target.parentNode.firstChild.textContent;
         }
-        handleTarget({
-            value: nextLabel.toLowerCase(),
-            label: nextLabel
-        });
+        handleTarget(nextTarget);
     }
 
     render() {
@@ -27,15 +25,16 @@ export default class Body extends React.Component {
             methodContents = (
                 <ul className="sampler-list">
                     {targets.map(function(elm, index) {
+                        const text = elm.name.split('.').pop();
                         let classList = ['sample-data'];
-                        if (target === elm.value) {
-                            classList.push('active')
+                        if (target === elm.name) {
+                            classList.push('active');
                         }
                         return (
-                            <li key={index} className={classList.join(' ')} onClick={self.handleClick}>
-                                <span className="sample-key">{elm.label}</span>
-                                <span className="sample-rank">Rank: 0</span>
-                                <span className="sample-type">Type: Object</span>
+                            <li key={index} id={elm.name} className={classList.join(' ')} onClick={self.handleClick}>
+                                <span className="sample-key">{text[0].toUpperCase() + text.slice(1)}</span>
+                                <span className="sample-rank">Rank: {elm.rank}</span>
+                                <span className="sample-type">Type: {elm.type}</span>
                             </li>
                         );
                     })}

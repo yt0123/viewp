@@ -23,9 +23,9 @@ export default class Source extends React.Component {
         actions.deleteSource(source.id);
     }
 
-    handleStaple(ev) {
+    handleStaple(staple) {
         const { source, actions } = this.props;
-        actions.stapleSource(source.id, ev.target.value);
+        actions.stapleSource(source.id, staple);
     }
 
     handleColor(color) {
@@ -35,10 +35,11 @@ export default class Source extends React.Component {
 
     render() {
         const { source, actions } = this.props;
-        const options = source.extra['category'].map(function(elm) {
+        const options = source.extra.map(function(elm) {
+            const text = elm.name.split('.').pop();
             return {
-                value: elm,
-                label: elm[0].toUpperCase() + elm.slice(1)
+                value: elm.name,
+                label: '[' + String(elm.rank) + '] ' + text[0].toUpperCase() + text.slice(1)
             };
         });
         return (

@@ -1,10 +1,10 @@
 import ActionTypes from '../constants/ActionTypes';
 
 const Actions = {
-    addSource: function(text, body, extra) {
+    addSource: function(name, body, extra) {
         return {
             type: ActionTypes.ADD_SOURCE,
-            text,
+            name,
             body,
             extra
         };
@@ -31,6 +31,13 @@ const Actions = {
     colorSource: function(id, data) {
         return {
             type: ActionTypes.COLOR_SOURCE,
+            id,
+            data
+        };
+    },
+    changeSource: function(id, data) {
+        return {
+            type: ActionTypes.CHANGE_SOURCE,
             id,
             data
         };
@@ -73,6 +80,22 @@ const Actions = {
     changeModal: function() {
         return {
             type: ActionTypes.CHANGE_MODAL
+        };
+    },
+    runProcess: function() {
+        return {
+            type: ActionTypes.DONE_PROCESS
+        };
+    },
+    doneProcess: function() {
+        return {
+            type: ActionTypes.DONE_PROCESS
+        };
+    },
+    changeProcess: function(completed) {
+        return {
+            type: ActionTypes.CHANGE_PROCESS,
+            completed
         };
     }
 };

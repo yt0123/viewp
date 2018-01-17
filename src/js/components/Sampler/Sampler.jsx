@@ -8,7 +8,7 @@ export default class Sampler extends React.Component {
         super(props);
         this.state = {
             selectedOption: {value: 'none', label: 'None'},
-            selectedTarget: {value: 'none', label: 'None' }
+            selectedTarget: {value: 'none', label: 'None'}
         };
         this.handleChange = this.handleChange.bind(this);
         this.handleTarget = this.handleTarget.bind(this);
@@ -30,12 +30,6 @@ export default class Sampler extends React.Component {
             {value: 'scale', label: 'Scale'},
             {value: 'link', label: 'Link'}
         ];
-        const targets = source.extra['category'].map(function(elm) {
-            return {
-                value: elm,
-                label: elm[0].toUpperCase() + elm.slice(1)
-            };
-        });
         return (
             <div className="sampler-view">
                 <div className="sampler-method">
@@ -54,7 +48,7 @@ export default class Sampler extends React.Component {
                     <Body
                         method={selectedOption.value}
                         target={selectedTarget.value}
-                        targets={targets}
+                        targets={source.extra}
                         actions={actions}
                         handleTarget={this.handleTarget}
                     />

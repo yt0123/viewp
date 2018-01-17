@@ -6,12 +6,14 @@ export default class Bind extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            selectedOption: { value: 'none', label: 'None' }
+            selectedOption: { value: 'none', label: '[x] None' }
         };
         this.handleBind = this.handleBind.bind(this);
     }
 
     handleBind(nextOption) {
+        const { handleChange } = this.props;
+        handleChange(nextOption.value);
         this.setState({ selectedOption: nextOption });
     }
 

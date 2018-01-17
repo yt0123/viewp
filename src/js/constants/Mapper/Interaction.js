@@ -1,19 +1,20 @@
 import ol from 'openlayers';
+import Properties from './Properties';
 
 const PropInteraction = function(opt_options) {
     ol.interaction.Pointer.call(this, {
         handleDownEvent: handleClick
     });
     function handleClick(ev) {
-        const overlay = ev.map.getOverlayById('popup');
+        const map = ev.map;
+        const overlay = map.getOverlayById('popup');
         overlay.setPosition();
 
-        const features = ev.map.getFeaturesAtPixel(ev.pixel);
-        if (features) {
-            const properties = features[0].getProperties();
-            overlay.getElement().innerHTML = String(properties.color);
+        map.forEachFeatureAtPixel(ev.pixel, function(feature, layer) {
+            const properties = feature.getProperties();
+            overlay.getElement().innerHTML = Properties.deploy(layer.get('id_'), properties);
             overlay.setPosition(ev.coordinate);
-        }
+        });
     }
 };
 ol.inherits(PropInteraction, ol.interaction.Pointer);

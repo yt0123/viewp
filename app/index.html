@@ -1,12 +1,107 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <title>Viewp</title>
-    <link rel="stylesheet" href="css/style.css" type="text/css" charset="UTF-8">
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="text/javascript" src="js/bundle.js" charset="UTF-8"></script>
-  </body>
+    <head>
+        <meta charset="UTF-8">
+        <title>Viewp</title>
+        <link rel="stylesheet" href="css/style.css" type="text/css" charset="UTF-8">
+        <style>
+            body {
+                position: relative;
+                background: url('img/back.jpg');
+                background-size: cover;
+                color: #000080;
+                font-family: Roboto;
+            }
+            div.contents {
+                width: 600px;
+                margin: auto;
+                padding-top: 150px;
+                font-size: 14px;
+            }
+            div.title-box {
+                width: 220px;
+                height: 100px;
+                margin: 50px auto;
+                padding: 50px 100px;
+                background-color: #000080;
+                border-radius: 5px;
+            }
+            h1.title {
+                margin-top: 29px;
+                margin-bottom: 0;
+                color: #ffffff;
+                text-align: center;
+                font-size: 52px;
+                font-family: Oswald;
+            }
+            div.subtitle-box {
+                width: 470px;
+                margin: 50px auto;
+                line-height: 23px;
+                font-family: Roboto-Thin;
+            }
+            div.btn-table {
+                display: table;
+                width: 540px;
+                padding-right: 30px;
+                padding-left: 30px;
+            }
+            div.btn-cell {
+                display: table-cell;
+                padding: 10px;
+            }
+            a.btn {
+                display: block;
+                width: 140px;
+                height: 22px;
+                margin: auto;
+                padding: 9px 10px;
+                border-radius: 3px;
+                text-align: center;
+                background-color: #64dd17;
+                text-decoration: none;
+            }
+            a.btn > span {
+                height: 22px;
+                display: inline-block;
+                vertical-align: middle;
+                color: #ffffff;
+                font-size: 13px;
+                letter-spacing: 0.06em;
+                line-height: 22px;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="contents">
+            <div class="title-box linearContainer">
+                <img class="linearLeft" src="img/app-icon.png" width="100px" height="100px" />
+                <h1 class="title linearRight">Viewp</h1>
+            </div>
+            <div class="subtitle-box">
+                <p style="text-align: center">
+                    We will communicate <span style="font-family: Roboto">GeoJSON</span> in an easy-to-understand manner.
+                </p>
+                <p>
+                    If you wish to fly to new heights,
+                    begin by setting your sights on a destination you can reach and then create a flight plan,
+                    a map, that will be your guide.
+                </p>
+            </div>
+            <div class="btn-table">
+                <div class="btn-cell">
+                    <a class="btn" href="view.html">
+                        <span><img src="img/btn-icon.png" width="22px" height="22px" /></span>
+                        <span style="padding-right: 8px;">Source Map</span>
+                    </a>
+                </div>
+                <div class="btn-cell">
+                    <a class="btn" href="view.html">
+                        <span><img src="img/btn-icon.png" width="22px" height="22px" /></span>
+                        <span style="padding-right: 7px;">List Map</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </body>
 </html>
