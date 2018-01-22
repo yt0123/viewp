@@ -40,7 +40,7 @@ const Utils = {
         return dot.reduce((accumlator, currentValue) => accumlator[currentValue], tree);
     },
     treeSearch: function(tree, trunk = [], result = []) {
-        for (let key in tree) {
+        Object.keys(tree).forEach((key) => {
             const node = tree[key];
             const dot = trunk.length > 0 ? trunk.join('.') + '.' + key : key;
             const type = Object.prototype.toString.call(node);
@@ -49,8 +49,34 @@ const Utils = {
                 const branch = trunk.concat(key);
                 Utils.treeSearch(node, branch, result);
             }
+        });
+        return result;
+    },
+    combSearch: function(dataset, index = 0, result = []) {
+        if (dataset.slice(index).length > 1) {
+            const data0 = dataset[index];
+            dataset.slice(index + 1).forEach((data1) => {
+                result.push([data0, data1]);
+            });
+            Utils.combSearch(dataset, index + 1, result);
         }
         return result;
+    },
+    computeCenter: function(coordinates) {
+        const n = coordinates.length - 1;
+        const a = 0.5 * coordinates.slice(0, n - 1).reduce((accumlator, cv, idx) => {
+            const [xi , yi] = cv;
+            const [xii, yii] = coordinates[idx + 1];
+            return accumlator + ((xi * yii) - (xii * yi));
+        }, 0);
+        const c = coordinates.slice(0, n - 1).reduce((accumlator, cv, idx) => {
+            const [xi , yi] = cv;
+            const [xii, yii] = coordinates[idx + 1];
+            accumlator.x = accumlator.x + ( (xi + xii) * ((xi * yii) - (xii * yi)) );
+            accumlator.y = accumlator.y + ( (yi + yii) * ((xi * yii) - (xii * yi)) );
+            return accumlator;
+        }, {x: 0, y: 0});
+        return [(1 / (6 * a)) * c.x, (1 / (6 * a)) * c.y];
     },
     createProperty: function(features, key, value = {}) {
         return features.map((feature) => {

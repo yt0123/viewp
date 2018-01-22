@@ -7,8 +7,16 @@ const common = {
     context: __dirname,
     entry: {
         'js/bundle': [
-            path.join(__dirname, 'src/js/root.js'),
-            path.join(__dirname, 'src/sass/style.scss')
+            path.join(__dirname, 'src/js/home/root.js'),
+            path.join(__dirname, 'src/sass/home/style.scss')
+        ],
+        'js/bundle-source': [
+            path.join(__dirname, 'src/js/source/root.js'),
+            path.join(__dirname, 'src/sass/source/style.scss')
+        ],
+        'js/bundle-catalog': [
+            path.join(__dirname, 'src/js/catalog/root.js'),
+            path.join(__dirname, 'src/sass/catalog/style.scss')
         ]
     },
     output: {
@@ -43,7 +51,12 @@ const common = {
         ]
     },
     plugins: [
-        new ExtractTextPlugin('css/style.css')
+        new ExtractTextPlugin({
+            filename: (getPath) => {
+                return getPath('css/[name].css').replace('css/js', 'css').replace('bundle', 'style');
+            },
+            allChunks: true
+        })
     ],
 };
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Utils from '../../constants/Utils';
-import { Scale } from '../../constants/Algorithm';
+import { Scale, Network } from '../../constants/Algorithm';
 
 export default class Process extends React.Component {
     constructor(props) {
@@ -41,7 +41,9 @@ export default class Process extends React.Component {
                 break;
 
             case 'network':
-                console.log('network');
+                const network = new Network(source.body.features);
+                network.calc(target);
+                algorithm = network;
                 break;
 
             case 'track':

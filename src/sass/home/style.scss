@@ -1,0 +1,77 @@
+$themeColor: #000080;
+$subColor: #ffffff;
+
+@import '../core/mixins';
+
+body {
+  position: relative;
+  background: url('../img/back.jpg');
+  background-size: cover;
+  color: #000080;
+  font-family: Roboto;
+}
+
+div.contents {
+  width: 600px;
+  margin: auto;
+  padding-top: 120px;
+  font-size: 14px;
+}
+
+div.title-box {
+  width: 220px;
+  height: 100px;
+  margin: 50px auto;
+  padding: 50px 100px;
+  background-color: #000080;
+  border-radius: 5px;
+}
+
+h1.title {
+  margin-top: 29px;
+  margin-bottom: 0;
+  color: #ffffff;
+  text-align: center;
+  font-size: 52px;
+  font-family: Oswald;
+}
+
+div.subtitle-box {
+  width: 470px;
+  margin: 50px auto;
+  line-height: 23px;
+  text-align: center;
+  font-family: Roboto-Thin;
+}
+
+div.btn-table {
+  display: table;
+  width: 540px;
+  padding-right: 30px;
+  padding-left: 30px;
+  div.btn-cell {
+    display: table-cell;
+    padding: 20px;
+  }
+}
+
+a.btn {
+  display: block;
+  width: 140px;
+  height: 22px;
+  margin: auto;
+  padding: 9px 10px;
+  border-radius: 3px;
+  text-align: center;
+  background-color: #64dd17;
+  text-decoration: none;
+  span {
+    height: 22px;
+    display: inline-block;
+    vertical-align: middle;
+    color: #ffffff;
+    font-size: 13px;
+    letter-spacing: 0.06em;
+    line-height: 22px;
+  }
+}

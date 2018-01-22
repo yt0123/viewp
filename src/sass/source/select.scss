@@ -1,0 +1,31 @@
+$themeColor: #000080;
+$subColor: #ffffff;
+
+@import '~react-select/dist/react-select.css';
+
+span.bind-select {
+    .Select {
+        font-size: 10.5px;
+        font-family: OpenSans;
+    }
+
+    .Select-control {
+        height: 18px;
+        .Select-placeholder {
+            line-height: 16px;
+        }
+        .Select-value {
+            line-height: 16px !important;
+            .Select-value-label {
+                line-height: 16px;
+            }
+        }
+        .Select-input {
+            height: 16px;
+        }
+        .Select-arrow {
+            margin-top: 5px;
+        }
+    }
+}
+

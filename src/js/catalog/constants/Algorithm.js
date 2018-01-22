@@ -85,11 +85,11 @@ export class Scale extends Algorithm {
     }
 }
 
-export class Link extends Algorithm {
+export class Network extends Algorithm {
     constructor(features) {
         super('link');
         this.features = features;
-        this.chunk = features.length;
+        this.n = features.length;
     }
 
     tick() {
@@ -99,17 +99,55 @@ export class Link extends Algorithm {
     calc(target) {
         const self = this;
         if (target !== 'none') {
-            this.setOrder(this.n);
-            const edges = this.features.forEach((feature) => {
+            this.setOrder(2 * this.n);
+            const targets = {};
+            this.features.forEach((feature) => {
                 self.tick();
-                return Utils.dotSearch(target, feature.properties);
+                const coordinates = feature.geometry.coordinates;
+                const property = Utils.dotSearch(target, feature.properties);
+                if (targets.hasOwnProperty(property)) {
+                    targets[property].push(coordinates);
+                } else {
+                    targets[property] = [ coordinates ];
+                }
             });
-            this.result = this.features.push(edges);
+            console.log(targets);
+
+            const m = Object.keys(targets).length;
+            this.setOrder(this.n + m);
+
+            let edges = [];
+            Object.keys(targets).forEach((key) => {
+                self.tick();
+                const combinations = Utils.combSearch(targets[key]);
+                console.log(key, combinations);
+                edges.push(
+                    combinations.map((comb) => {
+                        const center = [
+                            Utils.computeCenter(comb[0][0]),
+                            Utils.computeCenter(comb[1][0])
+                        ];
+                        return {
+                            type: 'Feature',
+                            geometry: {
+                                type: 'LineString',
+                                coordinates: [center[0], center[1]]
+                            },
+                            properties: {
+                                tmp_: { key: target }
+                            }
+                        };
+                    })
+                );
+            });
+            console.log(edges);
+            //this.result = this.features.concat(edges);
+            this.result = this.features;
         } else {
             this.setOrder(this.n);
             this.result = this.features.filter((feature) => {
                 self.tick();
-                return !features.properties.tmp_.hasOwnProperty('key');
+                return !feature.properties.tmp_.hasOwnProperty('key');
             })
         }
     }
