@@ -25,12 +25,12 @@ export default class Manager extends React.Component {
     }
 
     render() {
-        const { sources, actions } = this.props;
+        const { sources, samples, process, actions } = this.props;
         const { position } = this.state;
         const styles = { top: position + 'px' };
         return (
             <div ref="view" className="manager-view" style={styles}>
-              <Body sources={sources} actions={actions} />
+              <Body sources={sources} samples={samples} process={process} actions={actions} />
             </div>
         );
     }
@@ -38,6 +38,8 @@ export default class Manager extends React.Component {
 
 Manager.propTypes = {
     sources: PropTypes.array.isRequired,
+    samples: PropTypes.array.isRequired,
+    process: PropTypes.object.isRequired,
     visibility: PropTypes.bool.isRequired,
     actions: PropTypes.object.isRequired
 };

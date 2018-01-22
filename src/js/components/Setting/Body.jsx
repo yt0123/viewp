@@ -17,11 +17,12 @@ export default class Body extends React.Component {
         const { config, modal, actions } = this.props;
         return (
             <div className="setting-wrap">
-              <div className="setting-menu">
-                <button className="setting-close" onClick={this.handleClick}>
-                  <img src="img/destroy-icon.png" width="12px" height="12px" />
-                </button>
-                <List config={config} actions={actions} />
+                <div className="setting-cover" onClick={this.handleClick} />
+                <div className="setting-menu">
+                    <button className="setting-close" onClick={this.handleClick}>
+                        <img src="img/destroy-icon.png" width="12px" height="12px" />
+                    </button>
+                    <List config={config} actions={actions} />
               </div>
             </div>
         );

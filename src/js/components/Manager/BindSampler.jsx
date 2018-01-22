@@ -6,7 +6,6 @@ export default class Bind extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            selectedSample: { value: 'none', label: 'None' },
             visibility: false
         };
         this.handleActivate = this.handleActivate.bind(this);
@@ -23,14 +22,14 @@ export default class Bind extends React.Component {
     }
 
     render() {
-        const { source, actions } = this.props;
-        const { selectedSample, visibility } = this.state;
+        const { source, sample, process, actions } = this.props;
+        const { visibility } = this.state;
         let DataSampler = null;
         if (visibility) {
             DataSampler = (
                 <div className="sampler-popover">
                     <div className="sampler-cover" onClick={this.handleDeactivate} />
-                    <Sampler source={source} actions={actions} />
+                    <Sampler source={source} sample={sample} process={process} actions={actions} />
                 </div>
             );
         }
@@ -47,5 +46,7 @@ export default class Bind extends React.Component {
 
 Bind.propTypes = {
     source: PropTypes.object.isRequired,
+    sample: PropTypes.object.isRequired,
+    process: PropTypes.object.isRequired,
     actions: PropTypes.object.isRequired
 };

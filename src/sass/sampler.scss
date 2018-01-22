@@ -103,14 +103,32 @@ div.sampler-view {
     font-family: OpenSans-Bold;
     cursor: pointer;
   }
-  div.sampler-progress {
-    width: 90%;
-    height: 100%;
+  div.sampler-process {
+    width: 500px;
     margin: auto;
-    div.sampler-progressbar {
+    div.sampler-message {
       width: 100%;
-      height: 20px;
-      div {
+      padding-top: 50px;
+      padding-bottom: 20px;
+      h5 {
+        margin: auto;
+        text-align: center;
+        font-family: OpenSans;
+      }
+    }
+    div.sampler-progressbar {
+      width: 400px;
+      margin: auto;
+      border: 1px solid $themeColor;
+      border-radius: 5px;
+      div.sampler-progress {
+        width: 0;
+        height: 25px;
+        color: $subColor;
+        line-height: 25px;
+        text-align: center;
+        font-size: 12px;
+        font-family: OpenSans;
         background-color: $themeColor;
       }
     }

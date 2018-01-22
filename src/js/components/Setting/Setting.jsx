@@ -9,10 +9,10 @@ export default class Setting extends React.Component {
 
     render() {
         const { config, modal, actions } = this.props;
-        const style = modal ? { display: 'block' } : { display: 'none' };
+        const  styles = modal ? { display: 'block' } : { display: 'none' };
         return (
-            <div className="setting-view" style={style}>
-              <Body config={config} modal={modal} actions={actions} />
+            <div className="setting-view" style={styles}>
+                {modal ? <Body config={config} modal={modal} actions={actions} /> : null}
             </div>
         );
     }

@@ -45,11 +45,12 @@ class Config {
         return this;
     }
 
-    fill(newAlpha) {
+    fill(newAlpha = null) {
         const rgbFormat = this.rgb.join(', ');
         let colorFormat = this.rgba.replace('%rgb', rgbFormat);
-        if (newAlpha) {
-            colorFormat = colorFormat.replace('%alpha', newAlpha);
+        if (newAlpha !== null) {
+            const alpha = (this.alphaRange[1] * newAlpha) + this.alphaRange[0];
+            colorFormat = colorFormat.replace('%alpha', alpha);
         } else {
             colorFormat = colorFormat.replace('%alpha', this.alpha);
         }

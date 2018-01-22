@@ -23,11 +23,11 @@ export default class Load extends React.Component{
         reader.onload = function(ev) {
             const validator = new Validator().done(reader.result);
             const sourceObj = validator.getResult();
+            sourceObj.features = Utils.createProperty(sourceObj.features, 'tmp_');
             if (validator.getCertification()) {
                 const sourceExtra = [{ name: 'none', rank: 'n', type: 'Null' }];
                 Array.prototype.push.apply(sourceExtra, Utils.treeSearch(sourceObj.features[0].properties));
-                sourceExtra.sort((a, b) => a.rank - b.rank);
-                actions.addSource(file.name, sourceObj, sourceExtra);
+                actions.addSource(file.name, sourceObj, Utils.rankSortEx(sourceExtra, 'tmp_'));
             }
         };
         reader.readAsText(file, 'UTF-8');

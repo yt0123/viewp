@@ -122,7 +122,7 @@ const Factory = {
                     width: 1
                 }),
                 fill: new ol.style.Fill({
-                    color: Config.fill(properties.scale)
+                    color: Config.fill(properties.tmp_.score)
                 }),
                 image: new ol.style.Circle({
                     radius: 5,
@@ -132,7 +132,7 @@ const Factory = {
                 })
             });
             if (staple !== 'none') {
-                const text = Properties.fetch(staple, feature.getProperties());
+                const text = Properties.fetch(staple, properties);
                 const textStyle = new ol.style.Text({
                     text: text,
                     textAlign: 'center',

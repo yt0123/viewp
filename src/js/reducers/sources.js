@@ -13,7 +13,6 @@ const sources = function (state = [], action) {
                     extra: action.extra,
                     color: AppDefaults.rgb,
                     staple: 'none',
-                    sample: { scale: 'none', link: 'none' },
                     invalid: false
                 }
             ];
@@ -40,7 +39,7 @@ const sources = function (state = [], action) {
 
         case ActionTypes.CHANGE_SOURCE:
             return state.map(function(source) {
-                return source.id === action.id ? Object.assign({}, source, { sample: sample }) : source ;
+                return source.id === action.id ? Object.assign({}, source, { body: action.body, extra: action.extra }) : source ;
             });
 
         default:

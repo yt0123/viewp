@@ -15,7 +15,14 @@ div.setting-wrap {
     margin: 0;
     height: 100%;
     width: 100%;
-    background-color: rgba(0,0,0,0.3);
+    div.setting-cover {
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        background-color: rgba(0, 0, 0, 0.3);
+    }
 }
 
 div.setting-menu {
@@ -29,7 +36,7 @@ div.setting-menu {
     width: 400px;
     height: 250px;
     background-color: $themeColor;
-    border-radius: 10px;
+    border-radius: 5px;
     button.setting-close {
         padding: 2px;
         width: 16px;

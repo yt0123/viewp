@@ -35,12 +35,20 @@ const Actions = {
             data
         };
     },
-    changeSource: function(id, data) {
+    changeSource: function(id, body, extra) {
         return {
             type: ActionTypes.CHANGE_SOURCE,
             id,
-            data
+            body,
+            extra
         };
+    },
+    changeSample: function(id, data) {
+        return {
+            type: ActionTypes.CHANGE_SAMPLE,
+            id,
+            data
+        }
     },
     changeRgb: function(data) {
         return {
@@ -84,17 +92,12 @@ const Actions = {
     },
     runProcess: function() {
         return {
-            type: ActionTypes.DONE_PROCESS
+            type: ActionTypes.RUN_PROCESS
         };
     },
-    doneProcess: function() {
+    updateProcess: function(completed) {
         return {
-            type: ActionTypes.DONE_PROCESS
-        };
-    },
-    changeProcess: function(completed) {
-        return {
-            type: ActionTypes.CHANGE_PROCESS,
+            type: ActionTypes.UPDATE_PROCESS,
             completed
         };
     }

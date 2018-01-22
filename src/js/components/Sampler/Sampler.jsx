@@ -10,12 +10,35 @@ export default class Sampler extends React.Component {
             selectedOption: {value: 'none', label: 'None'},
             selectedTarget: {value: 'none', label: 'None'}
         };
+        this.handleClick = this.handleClick.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.handleTarget = this.handleTarget.bind(this);
     }
 
+    handleClick(ev) {
+        const { sample, actions } = this.props;
+        const { selectedOption, selectedTarget } = this.state;
+        actions.runProcess();
+    }
+
     handleChange(nextOption) {
-        this.setState({ selectedOption: nextOption });
+        const { sample } = this.props;
+        if (nextOption.value !== 'none') {
+            const initialValue = sample[nextOption.value];
+            const text = initialValue.split('.').pop();
+            this.setState({
+                selectedOption: nextOption,
+                selectedTarget: {
+                    value: initialValue,
+                    label: text[0].toUpperCase() + text.slice(1)
+                }
+            });
+        } else {
+            this.setState({
+                selectedOption: nextOption,
+                selectedTarget: {value: 'none', label: 'None'}
+            });
+        }
     }
 
     handleTarget(nextTarget) {
@@ -23,12 +46,14 @@ export default class Sampler extends React.Component {
     }
 
     render() {
-        const { source, actions } = this.props;
+        const { source, sample, process, actions } = this.props;
         const { selectedOption, selectedTarget } = this.state;
         const options = [
             {value: 'none', label: 'None'},
             {value: 'scale', label: 'Scale'},
-            {value: 'link', label: 'Link'}
+            {value: 'network', label: 'Network'},
+            {value: 'track', label: 'Track'},
+            {value: 'refine', label: 'Refine'}
         ];
         return (
             <div className="sampler-view">
@@ -48,7 +73,8 @@ export default class Sampler extends React.Component {
                     <Body
                         method={selectedOption.value}
                         target={selectedTarget.value}
-                        targets={source.extra}
+                        source={source}
+                        process={process}
                         actions={actions}
                         handleTarget={this.handleTarget}
                     />
@@ -58,7 +84,7 @@ export default class Sampler extends React.Component {
                     <span className="sampler-label">{selectedTarget.label}</span>
                 </div>
                 <div className="sampler-btn">
-                    <button type="button">Apply to Samples</button>
+                    <button type="button" onClick={this.handleClick}>Apply to Samples</button>
                 </div>
             </div>
         );
@@ -67,5 +93,7 @@ export default class Sampler extends React.Component {
 
 Sampler.propTypes = {
     source: PropTypes.object.isRequired,
+    sample: PropTypes.object.isRequired,
+    process: PropTypes.object.isRequired,
     actions: PropTypes.object.isRequired
 };

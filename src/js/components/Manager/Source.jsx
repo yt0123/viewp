@@ -34,14 +34,7 @@ export default class Source extends React.Component {
     }
 
     render() {
-        const { source, actions } = this.props;
-        const options = source.extra.map(function(elm) {
-            const text = elm.name.split('.').pop();
-            return {
-                value: elm.name,
-                label: '[' + String(elm.rank) + '] ' + text[0].toUpperCase() + text.slice(1)
-            };
-        });
+        const { source, sample, process, actions } = this.props;
         return (
             <span className="source-wrapper">
               <span className="source-statebox widgetLeft">
@@ -52,13 +45,13 @@ export default class Source extends React.Component {
                   <img src="img/destroy-icon.png" />
               </span>
               <span className="source-selectbox widgetRight">
-                  <BindSelect options={options} handleChange={this.handleStaple} />
+                  <BindSelect source={source} handleChange={this.handleStaple} />
               </span>
               <span className="source-colorbox widgetRight">
                   <BindPicker defaultValue={source.color} handleChange={this.handleColor} />
               </span>
               <span className="source-samplebox widgetRight">
-                  <BindSampler source={source} actions={actions} />
+                  <BindSampler source={source} sample={sample} process={process} actions={actions} />
               </span>
             </span>
         );
@@ -67,5 +60,7 @@ export default class Source extends React.Component {
 
 Source.propTypes = {
     source: PropTypes.object.isRequired,
+    sample: PropTypes.object.isRequired,
+    process: PropTypes.object.isRequired,
     actions: PropTypes.object.isRequired
 };

@@ -18,9 +18,25 @@ export default class Bind extends React.Component {
     }
 
     render() {
-        const { options, handleChange } = this.props;
+        const { source, handleChange } = this.props;
         const { selectedOption } = this.state;
         const styles = { width: '110px' };
+        const options = source.extra.filter(function(elm) {
+            return elm.name !== 'tmp_';
+        }).map(function(elm) {
+            const notations = elm.name.split('.');
+            const key = notations[notations.length - 1];
+            if (notations[0] === 'tmp_') {
+                return {
+                    value: elm.name,
+                    label: '[s] ' + key[0].toUpperCase() + key.slice(1)
+                }
+            }
+            return {
+                value: elm.name,
+                label: '[' + String(elm.rank) + '] ' + key[0].toUpperCase() + key.slice(1)
+            };
+        });
         return (
             <span className="bind-select">
                 <Select
@@ -40,6 +56,6 @@ export default class Bind extends React.Component {
 }
 
 Bind.propTypes = {
-    options: PropTypes.array.isRequired,
+    source: PropTypes.object.isRequired,
     handleChange: PropTypes.func.isRequired
 };

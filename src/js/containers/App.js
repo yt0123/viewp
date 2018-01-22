@@ -14,11 +14,11 @@ class App extends React.Component {
     }
 
     render() {
-        const { sources, config, visibility, modal, process, actions } = this.props;
+        const { sources, samples, config, visibility, modal, process, actions } = this.props;
         return (
             <div className="container">
                 <Header visibility={visibility} modal={modal} actions={actions} />
-                <Manager sources={sources} visibility={visibility} actions={actions} />
+                <Manager sources={sources} samples={samples} process={process} visibility={visibility} actions={actions} />
                 <Setting config={config} modal={modal} actions={actions} />
                 <Map sources={sources} config={config} actions={actions} />
                 <div className="container-cover" style={{display: process.isRunning ? 'block' : 'none'}} />
@@ -29,6 +29,7 @@ class App extends React.Component {
 
 App.propTypes = {
     sources: PropTypes.array.isRequired,
+    samples: PropTypes.array.isRequired,
     config: PropTypes.object.isRequired,
     visibility: PropTypes.bool.isRequired,
     modal: PropTypes.bool.isRequired,
@@ -39,6 +40,7 @@ App.propTypes = {
 const mapStateToProps = function(state) {
     return {
         sources: state.sources,
+        samples: state.samples,
         config: state.config,
         visibility: state.visibility,
         modal: state.modal,

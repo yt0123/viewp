@@ -1,44 +1,57 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Process from './Process.jsx';
+import Scale from './Scale.jsx';
+import Network from './Network.jsx';
+import Track from './Track.jsx';
+import Refine from './Refine.jsx';
 
 export default class Body extends React.Component {
     constructor(props) {
         super(props);
-        this.handleClick = this.handleClick.bind(this);
-    }
-
-    handleClick(ev) {
-        const { handleTarget } = this.props;
-        let nextTarget = { value: ev.target.id, label: ev.target.firstChild.textContent };
-        if (!nextTarget.value) {
-            nextTarget.value = ev.target.parentNode.id;
-            nextTarget.label = ev.target.parentNode.firstChild.textContent;
-        }
-        handleTarget(nextTarget);
     }
 
     render() {
-        const { method, target, targets, actions, handleTarget } = this.props;
-        let methodContents = (<div className="none-selected">None Selected Method</div>);
-        if (method !== 'none') {
-            const self = this;
+        const { method, target, source, process, actions, handleTarget } = this.props;
+        let methodContents = null;
+        if (!process.isRunning) {
+            switch (method) {
+                case 'scale':
+                    methodContents = (
+                        <Scale target={target} source={source} actions={actions} handleTarget={handleTarget} />
+                    );
+                    break;
+
+                case 'network':
+                    methodContents = (
+                        <Network target={target} source={source} actions={actions} handleTarget={handleTarget} />
+                    );
+                    break;
+
+                case 'track':
+                    methodContents = (
+                        <Track target={target} source={source} actions={actions} handleTarget={handleTarget} />
+                    );
+                    break;
+
+                case 'refine':
+                    methodContents = (
+                        <Refine target={target} source={source} actions={actions} handleTarget={handleTarget} />
+                    );
+                    break;
+
+                default:
+                    methodContents = (<div className="none-selected">None Selected Method</div>);
+            }
+        } else {
             methodContents = (
-                <ul className="sampler-list">
-                    {targets.map(function(elm, index) {
-                        const text = elm.name.split('.').pop();
-                        let classList = ['sample-data'];
-                        if (target === elm.name) {
-                            classList.push('active');
-                        }
-                        return (
-                            <li key={index} id={elm.name} className={classList.join(' ')} onClick={self.handleClick}>
-                                <span className="sample-key">{text[0].toUpperCase() + text.slice(1)}</span>
-                                <span className="sample-rank">Rank: {elm.rank}</span>
-                                <span className="sample-type">Type: {elm.type}</span>
-                            </li>
-                        );
-                    })}
-                </ul>
+                <Process
+                    method={method}
+                    target={target}
+                    source={source}
+                    process={process}
+                    actions={actions}
+                />
             );
         }
         return (
@@ -52,7 +65,8 @@ export default class Body extends React.Component {
 Body.propTypes = {
     method: PropTypes.string.isRequired,
     target: PropTypes.string.isRequired,
-    targets: PropTypes.array.isRequired,
+    source: PropTypes.object.isRequired,
+    process: PropTypes.object.isRequired,
     actions: PropTypes.object.isRequired,
     handleTarget: PropTypes.func.isRequired
 };

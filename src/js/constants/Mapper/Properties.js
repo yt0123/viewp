@@ -14,6 +14,11 @@ class Properties {
         return this;
     }
 
+    addValue(propertyId, newProperties) {
+        this.values[propertyId] = this.values.concat(newProperties);
+        return this;
+    }
+
     delValue(propertyId) {
         this.values.splice(propertyId, 1);
         this.logger.log('Delete properties take the number of ' + String(this.values.length - 1) + ' elements');

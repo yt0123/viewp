@@ -8,16 +8,15 @@ export default class Store extends React.Component {
     }
 
     render() {
-        const { sources, actions } = this.props;
+        const { sources, samples, process, actions } = this.props;
 
-        let Sources = [];
-        for (var index in sources) {
-            Sources.push(
+        const Sources = sources.map(function(source, index) {
+            return (
                 <li key={index} className="store-list">
-                  <Source source={sources[index]} actions={actions} />
+                  <Source source={source} sample={samples[index]} process={process} actions={actions} />
                 </li>
             );
-        }
+        });
         const styles = sources.length > 0 ? { display: 'none' } : { display: 'block' } ;
 
         return (
@@ -31,5 +30,7 @@ export default class Store extends React.Component {
 
 Store.propTypes = {
     sources: PropTypes.array.isRequired,
+    samples: PropTypes.array.isRequired,
+    process: PropTypes.object.isRequired,
     actions: PropTypes.object.isRequired
 };

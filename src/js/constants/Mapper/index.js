@@ -69,7 +69,7 @@ class Map {
                 newFeatures.forEach(function(feature, index, array) { feature.setId(index); });
                 if (!accessLayer) { accessLayer = this.map.getLayers().getArray()[sources.length]; }
                 accessLayer.setSource(new ol.source.Vector({ features: newFeatures, format: sourceFormat }));
-                accessLayer.setStyle(Factory.polygonStyleFunction);
+                accessLayer.setStyle(Factory.sampleStyleFunction(newSource.staple));
                 accessLayer.set('id_', sources.length - 1);
                 Properties.setValue(newSource.extra);
                 break;
@@ -94,6 +94,15 @@ class Map {
                 const newColor = sources[action.id].color;
                 Config.setRgb(newColor);
                 accessLayer.getSource().changed();
+                break;
+
+            case ActionTypes.CHANGE_SOURCE:
+                const newSampleSource = sources[action.id];
+                const sampleSourceFormat = new ol.format.GeoJSON({ dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857' });
+                const newSampleFeatures = sampleSourceFormat.readFeatures(newSampleSource.body);
+                newSampleFeatures.forEach(function(feature, index, array) { feature.setId(index); });
+                accessLayer.setSource(new ol.source.Vector({ features: newSampleFeatures, format: sampleSourceFormat }));
+                accessLayer.setStyle(Factory.sampleStyleFunction(newSampleSource.staple));
                 break;
 
             default:
