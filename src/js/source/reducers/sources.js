@@ -10,6 +10,7 @@ const sources = function (state = [], action) {
                     id: state.length,
                     name: action.name,
                     body: action.body,
+                    type: action.purity,
                     extra: action.extra,
                     color: AppDefaults.rgb,
                     staple: 'none',

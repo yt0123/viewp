@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Utils from '../../constants/Utils';
-import { Scale, Network } from '../../constants/Algorithm';
+import { Scale, Link, Track, Orient } from '../../constants/Algorithm';
 
 export default class Process extends React.Component {
     constructor(props) {
@@ -12,7 +12,7 @@ export default class Process extends React.Component {
     }
 
     resolveSetInterval(token) {
-        const { method, target, source, actions } = this.props;
+        const { source, actions } = this.props;
         const { completed } = this.state;
         const currentProgress = token.getProgress();
         if (completed !== 100) {
@@ -31,27 +31,27 @@ export default class Process extends React.Component {
     }
 
     handleProcess() {
-        const { method, target, source, actions } = this.props;
+        const { method, assembly, subAssembly, source, actions } = this.props;
         let algorithm = null;
         switch (method) {
             case 'scale':
-                const scale = new Scale(source.body.features);
-                scale.calc(target);
-                algorithm = scale;
+                algorithm = new Scale(source.body.features);
+                algorithm.calc(assembly);
                 break;
 
-            case 'network':
-                const network = new Network(source.body.features);
-                network.calc(target);
-                algorithm = network;
+            case 'link':
+                algorithm = new Link(source.body.features);
+                algorithm.calc(assembly);
                 break;
 
             case 'track':
-                console.log('track');
+                algorithm = new Track(source.body.features);
+                algorithm.calc(assembly, subAssembly);
                 break;
 
-            case 'refine':
-                console.log('track');
+            case 'orient':
+                algorithm = new Orient(source.body.features);
+                algorithm.calc(assembly);
                 break;
         }
         return algorithm;
@@ -68,15 +68,19 @@ export default class Process extends React.Component {
     }
 
     componentWillUnmount() {
-        const { method, target, source, actions } = this.props;
+        const { method, assembly, subAssembly, source, actions } = this.props;
         const newSample = {};
-        newSample[method]  = target;
+        if (!subAssembly) {
+            newSample[method] = { assembly };
+        } else {
+            newSample[method] = { assembly, subAssembly };
+        }
         actions.changeSample(source.id, newSample);
         clearInterval(this.timerId);
     }
 
     render() {
-        const { method, target, source, process, actions } = this.props;
+        const { method, assembly, subAssembly, source, process, actions } = this.props;
         const { completed } = this.state;
         const progressText = String(completed) + '%';
         const styles = { width: progressText };
@@ -95,7 +99,7 @@ export default class Process extends React.Component {
 
 Process.propTypes = {
     method: PropTypes.string.isRequired,
-    target: PropTypes.string.isRequired,
+    assembly: PropTypes.string.isRequired,
     source: PropTypes.object.isRequired,
     process: PropTypes.object.isRequired,
     actions: PropTypes.object.isRequired

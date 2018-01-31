@@ -69,7 +69,7 @@ class Map {
                 newFeatures.forEach(function(feature, index, array) { feature.setId(index); });
                 if (!accessLayer) { accessLayer = this.map.getLayers().getArray()[sources.length]; }
                 accessLayer.setSource(new ol.source.Vector({ features: newFeatures, format: sourceFormat }));
-                accessLayer.setStyle(Factory.sampleStyleFunction(newSource.staple));
+                accessLayer.setStyle(Factory.styleFactory(newSource.staple));
                 accessLayer.set('id_', sources.length - 1);
                 Properties.setValue(newSource.extra);
                 break;
@@ -86,7 +86,7 @@ class Map {
 
             case ActionTypes.STAPLE_SOURCE:
                 const newStaple = sources[action.id].staple;
-                accessLayer.setStyle(Factory.sampleStyleFunction(newStaple));
+                accessLayer.setStyle(Factory.styleFactory(newStaple));
                 accessLayer.getSource().changed();
                 break;
 
@@ -102,7 +102,7 @@ class Map {
                 const newSampleFeatures = sampleSourceFormat.readFeatures(newSampleSource.body);
                 newSampleFeatures.forEach(function(feature, index, array) { feature.setId(index); });
                 accessLayer.setSource(new ol.source.Vector({ features: newSampleFeatures, format: sampleSourceFormat }));
-                accessLayer.setStyle(Factory.sampleStyleFunction(newSampleSource.staple));
+                accessLayer.setStyle(Factory.styleFactory(newSampleSource.staple));
                 break;
 
             default:

@@ -83,6 +83,19 @@ const Utils = {
             feature.properties[key] = value;
             return feature
         });
+    },
+    complementaryRgba: function(rgba) {
+        const [r, g, b, alpha] = rgba;
+        const max = Math.max(r, Math.max(g, b));
+        const min = Math.min(r, Math.min(g, b));
+
+        const sum = max + min;
+
+        const newR = sum - r;
+        const newG = sum - g;
+        const newB = sum - b;
+
+        return [newR, newG, newB, alpha]
     }
 };
 

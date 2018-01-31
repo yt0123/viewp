@@ -47,8 +47,8 @@ export class Scale extends Algorithm {
        this.n = features.length;
     }
 
-    tick() {
-        this.setProgress(1);
+    tick(chunk = 1) {
+        this.setProgress(chunk);
     }
 
     calc(target) {
@@ -85,15 +85,15 @@ export class Scale extends Algorithm {
     }
 }
 
-export class Network extends Algorithm {
+export class Link extends Algorithm {
     constructor(features) {
         super('link');
         this.features = features;
         this.n = features.length;
     }
 
-    tick() {
-        this.setProgress(1);
+    tick(chunk = 1) {
+        this.setProgress(chunk);
     }
 
     calc(target) {
@@ -101,53 +101,149 @@ export class Network extends Algorithm {
         if (target !== 'none') {
             this.setOrder(2 * this.n);
             const targets = {};
-            this.features.forEach((feature) => {
+            this.features.forEach((feature, index) => {
                 self.tick();
                 const coordinates = feature.geometry.coordinates;
-                const property = Utils.dotSearch(target, feature.properties);
-                if (targets.hasOwnProperty(property)) {
-                    targets[property].push(coordinates);
+                const key = Utils.dotSearch(target, feature.properties);
+                if (targets.hasOwnProperty(key)) {
+                    targets[key].push({ index, coordinates });
                 } else {
-                    targets[property] = [ coordinates ];
+                    targets[key] = [ { index, coordinates } ];
                 }
             });
-            console.log(targets);
-
-            const m = Object.keys(targets).length;
-            this.setOrder(this.n + m);
-
-            let edges = [];
+            const chunk = this.n  / Object.keys(targets).length;
             Object.keys(targets).forEach((key) => {
-                self.tick();
-                const combinations = Utils.combSearch(targets[key]);
-                console.log(key, combinations);
-                edges.push(
-                    combinations.map((comb) => {
-                        const center = [
-                            Utils.computeCenter(comb[0][0]),
-                            Utils.computeCenter(comb[1][0])
-                        ];
-                        return {
-                            type: 'Feature',
-                            geometry: {
-                                type: 'LineString',
-                                coordinates: [center[0], center[1]]
-                            },
-                            properties: {
-                                tmp_: { key: target }
-                            }
-                        };
-                    })
-                );
+                self.tick(chunk);
+                const feature = this.features[targets[key][0].index];
+                const link = targets[key].map((target) => target.coordinates);
+                const temporary = feature.properties.tmp_;
+                feature.properties.tmp_ = Object.assign({}, temporary, { link });
             });
-            console.log(edges);
-            //this.result = this.features.concat(edges);
+            console.log(targets);
             this.result = this.features;
         } else {
             this.setOrder(this.n);
             this.result = this.features.filter((feature) => {
                 self.tick();
-                return !feature.properties.tmp_.hasOwnProperty('key');
+                if (feature.properties.tmp_.hasOwnProperty('link')) {
+                    delete feature.properties.tmp_.link;
+                }
+            })
+        }
+    }
+}
+
+export class Track extends Algorithm {
+    constructor(features) {
+        super('track');
+        this.features = features;
+        this.n = features.length;
+    }
+
+    tick(chunk = 1) {
+        this.setProgress(chunk);
+    }
+
+    calc(targetKey, sortKey) {
+        const self = this;
+        if (targetKey !== 'none') {
+            this.setOrder(2 * this.n);
+            const targets = {};
+            this.features.forEach((feature, index) => {
+                self.tick();
+                const coordinates = feature.geometry.coordinates;
+                const key = Utils.dotSearch(targetKey, feature.properties);
+                let value = Utils.dotSearch(sortKey, feature.properties);
+                if (isNaN(value)) {
+                    const tmp = new Date(value);
+                    if (tmp.toString() !== 'Invalid Date') {
+                        value = tmp;
+                    } else {
+                        value = value.length;
+                    }
+                } else {
+                    value = Number(value);
+                }
+                if (targets.hasOwnProperty(key)) {
+                    targets[key].push({index, value, coordinates});
+                } else {
+                    targets[key] = [ {index, value, coordinates} ];
+                }
+            });
+            const chunk = this.n  / Object.keys(targets).length;
+            Object.keys(targets).forEach((key) => {
+                self.tick(chunk);
+                targets[key].sort((start, end) => {
+                    if (start.value > end.value) {
+                        return 1;
+                    } else if (start.value < end.value) {
+                        return -1;
+                    } else {
+                        return 0;
+                    }
+                });
+                const feature = this.features[targets[key][0].index];
+                const track = targets[key].map((target) => target.coordinates);
+                const temporary = feature.properties.tmp_;
+                feature.properties.tmp_ = Object.assign({}, temporary, { track });
+            });
+            this.result = this.features;
+        } else {
+            this.setOrder(this.n);
+            this.result = this.features.filter((feature) => {
+                self.tick();
+                if (feature.properties.tmp_.hasOwnProperty('link')) {
+                    delete feature.properties.tmp_.link;
+                }
+            })
+        }
+    }
+}
+
+export class Orient extends Algorithm {
+    constructor(features) {
+        super('orient');
+        this.features = features;
+        this.n = features.length;
+    }
+
+    tick(chunk = 1) {
+        this.setProgress(chunk);
+    }
+
+    calc(target) {
+        const self = this;
+        if (target !== 'none') {
+            this.setOrder(this.n);
+            this.result = this.features.map((feature, index) => {
+                self.tick();
+                const tmp = Utils.dotSearch(target, feature.properties);
+                const targets = tmp.map((value, index) => {
+                    if (isNaN(value)) {
+                        const tmp = new Date(value);
+                        return {
+                            value: tmp.toString() !== 'Invalid Date' ? tmp : value.length,
+                            coordinates: feature.geometry.coordinates[index]
+                        };
+                    } else {
+                        return {
+                            value: Number(value),
+                            coordinates: feature.geometry.coordinates[index]
+                        };
+                    }
+                });
+                const orient = targets[0].value < targets[targets.length - 1].value ? 1 : -1;
+                const temporary = feature.properties.tmp_;
+                feature.properties.tmp_ = Object.assign({}, temporary, { orient });
+                return feature;
+            });
+        } else {
+            this.setOrder(this.n);
+            this.result = this.features.filter((feature) => {
+                self.tick();
+                if (feature.properties.tmp_.hasOwnProperty('orient')) {
+                    delete feature.properties.tmp_.orient;
+                }
             })
         }
     }

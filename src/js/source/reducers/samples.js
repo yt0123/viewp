@@ -1,5 +1,5 @@
 import ActionTypes from '../constants/ActionTypes';
-import AppDefaults from '../constants/AppDefaults';
+import SampleMethods from '../constants/SampleMethods';
 
 const samples = function (state = [], action) {
     switch (action.type) {
@@ -8,10 +8,22 @@ const samples = function (state = [], action) {
                 ...state,
                 {
                     id: state.length,
-                    scale: 'none',
-                    network: 'none',
-                    track: 'none',
-                    refine: 'none'
+                    scale: {
+                        assembly: SampleMethods.NONE.value,
+                    },
+                    subset: {
+                        assembly: SampleMethods.NONE.value,
+                    },
+                    link: {
+                        assembly: SampleMethods.NONE.value,
+                    },
+                    track: {
+                        assembly: SampleMethods.NONE.value,
+                        subAssembly: SampleMethods.NONE.value
+                    },
+                    orient: {
+                        assembly: SampleMethods.NONE.value,
+                    }
                 }
             ];
 

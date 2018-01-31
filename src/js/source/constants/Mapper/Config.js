@@ -46,27 +46,19 @@ class Config {
     }
 
     fill(newAlpha = null) {
-        const rgbFormat = this.rgb.join(', ');
-        let colorFormat = this.rgba.replace('%rgb', rgbFormat);
+        let colorFormat = this.rgb.concat([ this.alpha ]);
         if (newAlpha !== null) {
-            const alpha = (this.alphaRange[1] * newAlpha) + this.alphaRange[0];
-            colorFormat = colorFormat.replace('%alpha', alpha);
-        } else {
-            colorFormat = colorFormat.replace('%alpha', this.alpha);
+            colorFormat[colorFormat.length-1] = (this.alphaRange[1] * newAlpha) + this.alphaRange[0];
         }
         return colorFormat;
     }
 
     stroke() {
-        const strokeFormat = this.strokeColor.join(', ');
-        const colorFormat = this.rgba.replace('%rgb', strokeFormat).replace('%alpha', this.alpha);
-        return colorFormat;
+        return this.strokeColor.concat([ this.alpha ]);
     }
 
     text() {
-        const rgbFormat = this.rgb.join(', ');
-        const colorFormat = this.rgba.replace('%rgb', rgbFormat).replace('%alpha', 1.0);
-        return colorFormat;
+        return this.rgb.concat([ 1.0 ]);
     }
 
     scale() {
@@ -74,9 +66,7 @@ class Config {
     }
 
     outline() {
-        const outlineFormat = this.outlineColor.join(', ');
-        const colorFormat = this.rgba.replace('%rgb', outlineFormat).replace('%alpha', 1.0);
-        return colorFormat;
+        return this.outlineColor.concat([ 1.0 ]);
     }
 
 }

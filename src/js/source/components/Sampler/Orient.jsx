@@ -2,35 +2,31 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Process from './Process.jsx';
 
-export default class Refine extends React.Component {
+export default class Orient extends React.Component {
     constructor(props) {
         super(props);
         this.handleClick = this.handleClick.bind(this);
     }
 
     handleClick(ev) {
-        const { handleTarget } = this.props;
-        let nextTarget = { value: ev.target.id, label: ev.target.firstChild.textContent };
-        if (!nextTarget.value) {
-            nextTarget.value = ev.target.parentNode.id;
-            nextTarget.label = ev.target.parentNode.firstChild.textContent;
-        }
-        handleTarget(nextTarget);
+        const { handleAssembly } = this.props;
+        const nextAssembly = ev.target.id ? ev.target.id : ev.target.parentNode.id;
+        handleAssembly(nextAssembly);
     }
 
     render() {
-        const { target, source, actions, handleTarget } = this.props;
+        const { assembly, source, actions, handleAssembly } = this.props;
         const self = this;
         return (
             <ul className="sampler-list">
                 {source.extra.filter(function(elm, index) {
                     if (elm.name.split('.')[0] !== 'tmp_') {
-                        return elm.type === 'Number' || elm.type === 'String' || elm.type === 'Null';
+                        return elm.type === 'Array' || elm.type === 'Null';
                     }
                 }).map(function(elm, index) {
                     const text = elm.name.split('.').pop();
-                    let classList = ['sample-data'];
-                    if (target === elm.name) {
+                    let classList = ['sample-data', 'assembly'];
+                    if (assembly === elm.name) {
                         classList.push('active');
                     }
                     return (
@@ -46,9 +42,9 @@ export default class Refine extends React.Component {
     }
 }
 
-Refine.propTypes = {
-    target: PropTypes.string.isRequired,
+Orient.propTypes = {
+    assembly: PropTypes.string.isRequired,
     source: PropTypes.object.isRequired,
     actions: PropTypes.object.isRequired,
-    handleTarget: PropTypes.func.isRequired
+    handleAssembly: PropTypes.func.isRequired
 };

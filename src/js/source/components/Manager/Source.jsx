@@ -40,7 +40,12 @@ export default class Source extends React.Component {
               <span className="source-statebox widgetLeft">
                   <input type="checkbox" defaultChecked="checked" onChange={this.handleCheck} />
               </span>
-              <span className="source-namebox widgetLeft">{source.name}</span>
+              <span className="source-namebox widgetLeft">
+                  {source.name}
+              </span>
+              <span className="source-typebox widgetLeft">
+                  [{source.type}]
+              </span>
               <span className="source-destroybox widgetRight" onClick={this.handleDelete}>
                   <img src="img/destroy-icon.png" />
               </span>

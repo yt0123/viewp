@@ -2,59 +2,73 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Select from 'react-select';
 import Body from './Body.jsx';
+import Assembly from './Assembly.jsx';
+import SampleMethods from '../../constants/SampleMethods';
 
 export default class Sampler extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            selectedOption: {value: 'none', label: 'None'},
-            selectedTarget: {value: 'none', label: 'None'}
+            selectedOption: SampleMethods.NONE,
+            assembly: 'assembly',
+            subAssembly: 'subAssembly'
         };
         this.handleClick = this.handleClick.bind(this);
         this.handleChange = this.handleChange.bind(this);
-        this.handleTarget = this.handleTarget.bind(this);
+        this.handleAssembly = this.handleAssembly.bind(this);
+        this.handleSubAssembly = this.handleSubAssembly.bind(this);
     }
 
     handleClick(ev) {
         const { sample, actions } = this.props;
-        const { selectedOption, selectedTarget } = this.state;
+        const { selectedOption, assembly } = this.state;
         actions.runProcess();
     }
 
     handleChange(nextOption) {
         const { sample } = this.props;
         if (nextOption.value !== 'none') {
-            const initialValue = sample[nextOption.value];
-            const text = initialValue.split('.').pop();
+            const initial = sample[nextOption.value];
+            console.log(initial);
             this.setState({
                 selectedOption: nextOption,
-                selectedTarget: {
-                    value: initialValue,
-                    label: text[0].toUpperCase() + text.slice(1)
-                }
+                assembly: initial.assembly,
+                subAssembly: initial.subAssembly
             });
         } else {
             this.setState({
                 selectedOption: nextOption,
-                selectedTarget: {value: 'none', label: 'None'}
+                assembly: 'assembly',
+                subAssembly: 'subAssembly'
             });
         }
     }
 
-    handleTarget(nextTarget) {
-        this.setState({ selectedTarget: nextTarget });
+    handleAssembly(nextAssembly) {
+        this.setState({ assembly: nextAssembly });
+    }
+
+    handleSubAssembly(nextSubAssembly) {
+        this.setState({ subAssembly: nextSubAssembly });
     }
 
     render() {
         const { source, sample, process, actions } = this.props;
-        const { selectedOption, selectedTarget } = this.state;
-        const options = [
-            {value: 'none', label: 'None'},
-            {value: 'scale', label: 'Scale'},
-            {value: 'network', label: 'Network'},
-            {value: 'track', label: 'Track'},
-            {value: 'refine', label: 'Refine'}
-        ];
+        const { selectedOption, assembly, subAssembly } = this.state;
+        let options = [ SampleMethods.NONE, SampleMethods.SCALE ];
+        switch(source.type) {
+            case 'Point':
+                options = options.concat([ SampleMethods.LINK, SampleMethods.TRACK ]);
+                break;
+
+            case 'LineString':
+                options = options.concat([ SampleMethods.ORIENT ]);
+                break;
+
+            case 'Polygon':
+                options = options.concat([ SampleMethods.SPREAD ]);
+                break;
+        }
         return (
             <div className="sampler-view">
                 <div className="sampler-method">
@@ -72,16 +86,21 @@ export default class Sampler extends React.Component {
                 <div className="sampler-body">
                     <Body
                         method={selectedOption.value}
-                        target={selectedTarget.value}
+                        assembly={assembly}
+                        subAssembly={subAssembly}
                         source={source}
                         process={process}
                         actions={actions}
-                        handleTarget={this.handleTarget}
+                        handleAssembly={this.handleAssembly}
+                        handleSubAssembly={this.handleSubAssembly}
                     />
                 </div>
                 <div className="sampler-target">
-                    <span>Key Property :</span>
-                    <span className="sampler-label">{selectedTarget.label}</span>
+                    <Assembly
+                        assembly={assembly}
+                        subAssembly={subAssembly}
+                        actions={actions}
+                    />
                 </div>
                 <div className="sampler-btn">
                     <button type="button" onClick={this.handleClick}>Apply to Samples</button>

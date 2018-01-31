@@ -35,7 +35,6 @@ div.sampler-view {
     font-family: OpenSans;
   }
   div.sampler-body {
-    position: relative;
     width: 558px;
     height: 190px;
     margin-top: 10px;
@@ -43,6 +42,15 @@ div.sampler-view {
     border: 1px solid $themeColor;
     border-radius: 3px;
     overflow: scroll;
+    div.sampler-row {
+      width: 548px;
+      height: 87px;
+      margin: 4px;
+      padding: 0;
+      border: 1px solid $themeColor;
+      border-radius: 3px;
+      overflow: scroll;
+    }
     ul.sampler-list {
       padding: 0;
       list-style: none;
@@ -137,7 +145,7 @@ div.sampler-view {
     position: absolute;
     top: 0;
     bottom: 0;
-    width: 100%;
+    width: 558px;
     height: 20px;
     margin: auto;
     text-align: center;

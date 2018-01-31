@@ -6,49 +6,79 @@ export default class Track extends React.Component {
     constructor(props) {
         super(props);
         this.handleClick = this.handleClick.bind(this);
+        this.handleSubClick = this.handleSubClick.bind(this);
     }
 
     handleClick(ev) {
-        const { handleTarget } = this.props;
-        let nextTarget = { value: ev.target.id, label: ev.target.firstChild.textContent };
-        if (!nextTarget.value) {
-            nextTarget.value = ev.target.parentNode.id;
-            nextTarget.label = ev.target.parentNode.firstChild.textContent;
-        }
-        handleTarget(nextTarget);
+        const { handleAssembly } = this.props;
+        const nextAssembly = ev.target.id ? ev.target.id : ev.target.parentNode.id;
+        handleAssembly(nextAssembly);
+    }
+
+    handleSubClick(ev) {
+        const { handleSubAssembly } = this.props;
+        const nextSubAssembly = ev.target.id ? ev.target.id : ev.target.parentNode.id;
+        handleSubAssembly(nextSubAssembly);
     }
 
     render() {
-        const { target, source, actions, handleTarget } = this.props;
+        const { assembly, subAssembly, source, actions, handleAssembly } = this.props;
         const self = this;
         return (
-            <ul className="sampler-list">
-                {source.extra.filter(function(elm, index) {
-                    if (elm.name.split('.')[0] !== 'tmp_') {
-                        return elm.type === 'Number' || elm.type === 'String' || elm.type === 'Null';
-                    }
-                }).map(function(elm, index) {
-                    const text = elm.name.split('.').pop();
-                    let classList = ['sample-data'];
-                    if (target === elm.name) {
-                        classList.push('active');
-                    }
-                    return (
-                        <li key={index} id={elm.name} className={classList.join(' ')} onClick={self.handleClick}>
-                            <span className="sample-key">{text[0].toUpperCase() + text.slice(1)}</span>
-                            <span className="sample-rank">Rank: {elm.rank}</span>
-                            <span className="sample-type">Type: {elm.type}</span>
-                        </li>
-                    );
-                })}
-            </ul>
+            <div className="sampler-table">
+                <div className="sampler-row">
+                    <ul className="sampler-list">
+                        {source.extra.filter(function(elm, index) {
+                            if (elm.name.split('.')[0] !== 'tmp_') {
+                                return elm.type === 'Number' || elm.type === 'String' || elm.type === 'Null';
+                            }
+                        }).map(function(elm, index) {
+                            const text = elm.name.split('.').pop();
+                            let classList = ['sample-data', 'assembly'];
+                            if (assembly === elm.name) {
+                                classList.push('active');
+                            }
+                            return (
+                                <li key={index} id={elm.name} className={classList.join(' ')} onClick={self.handleClick}>
+                                    <span className="sample-key">{text[0].toUpperCase() + text.slice(1)}</span>
+                                    <span className="sample-rank">Rank: {elm.rank}</span>
+                                    <span className="sample-type">Type: {elm.type}</span>
+                                </li>
+                            );
+                        })}
+                    </ul>
+                </div>
+                <div className="sampler-row">
+                    <ul className="sampler-list">
+                        {source.extra.filter(function(elm, index) {
+                            if (elm.name.split('.')[0] !== 'tmp_') {
+                                return elm.type === 'Number' || elm.type === 'String' || elm.type === 'Null';
+                            }
+                        }).map(function(elm, index) {
+                            const text = elm.name.split('.').pop();
+                            let classList = ['sample-data', 'sub-assembly'];
+                            if (subAssembly === elm.name) {
+                                classList.push('active');
+                            }
+                            return (
+                                <li key={index} id={elm.name} className={classList.join(' ')} onClick={self.handleSubClick}>
+                                    <span className="sample-key">{text[0].toUpperCase() + text.slice(1)}</span>
+                                    <span className="sample-rank">Rank: {elm.rank}</span>
+                                    <span className="sample-type">Type: {elm.type}</span>
+                                </li>
+                            );
+                        })}
+                    </ul>
+                </div>
+            </div>
         );
     }
 }
 
 Track.propTypes = {
-    target: PropTypes.string.isRequired,
+    assembly: PropTypes.string.isRequired,
+    subAssembly: PropTypes.string.isRequired,
     source: PropTypes.object.isRequired,
     actions: PropTypes.object.isRequired,
-    handleTarget: PropTypes.func.isRequired
+    handleAssembly: PropTypes.func.isRequired
 };

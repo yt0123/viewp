@@ -1,11 +1,12 @@
 import ActionTypes from '../constants/ActionTypes';
 
 const Actions = {
-    addSource: function(name, body, extra) {
+    addSource: function(name, body, purity, extra) {
         return {
             type: ActionTypes.ADD_SOURCE,
             name,
             body,
+            purity,
             extra
         };
     },
