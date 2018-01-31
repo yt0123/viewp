@@ -1,0 +1,113 @@
+$themeColor: #000080;
+$subColor: #ffffff;
+
+@import '~openlayers/dist/ol.css';
+@import '../core/mixins';
+
+@import 'manager';
+@import 'map';
+@import 'picker';
+@import 'sampler';
+@import 'select';
+@import 'source';
+@import 'setting';
+
+div#root {
+  height: 100%;
+  width: 100%;
+  div.container {
+    min-height: 500px;
+    min-width: 500px;
+    height: 100%;
+    width: 100%;
+    div.container-cover {
+      position: fixed;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      background-color: rgba(0, 0, 0, 0.0);
+      z-index: 1000;
+    }
+  }
+}
+div.header {
+  height: 55px;
+  width: 100%;
+  min-width: 500px;
+  background-color: $subColor;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  div.header-contents {
+    padding: 5px 0 5px;
+    height: 45px;
+    background-color: $themeColor;
+    div.app-logo {
+      width: 120px;
+      height: 45px;
+      margin: 0 20px;
+      cursor: pointer;
+      div.logo-img {
+        width: 40px;
+        height: 40px;
+        padding-bottom: 5px;
+      }
+      div.logo-text {
+        width: 72px;
+        height: 45px;
+        padding-left: 3px;
+        span {
+          position: absolute;
+          bottom: 0;
+          font-size: 27px;
+          font-family: Oswald;
+          color: $subColor;
+        }
+      }
+    }
+    div.app-setting {
+      width: 24px;
+      height: 24px;
+      margin-right: 10px;
+      button {
+        width: 24px;
+        height: 24px;
+        padding: 5px 4px;
+        border: 0.16em solid #dcdcdc;
+        border-radius: 2px;
+        cursor: pointer;
+        background-color: $themeColor;
+      }
+    }
+    div.app-manager {
+      width: 90px;
+      height: 24px;
+      margin-right: 10px;
+      div.manager-toggle {
+        width: 88px;
+        height: 22px;
+        padding: 0;
+        border: 1px solid #dcdcdc;
+        border-radius: 2px;
+        cursor: pointer;
+        background-color: $themeColor;
+        span {
+          display: block;
+          width: 71px;
+          height: 22px;
+          margin: 0;
+          line-height: 22px;
+          text-align:center;
+          font-family: OpenSans-Bold;
+          font-size: 11.5px;
+          color: $subColor;
+        }
+        img {
+          margin: 5.5px 5px 4.5px 0px;
+        }
+      }
+    }
+  }
+}

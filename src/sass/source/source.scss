@@ -1,0 +1,118 @@
+$themeColor: #000080;
+$subColor: #ffffff;
+
+.widgetLeft {
+    float: left;
+}
+.widgetRight {
+    float: right;
+}
+/* clearfix */
+.source-wrapper:before, .source-wrapper:after {
+    content: "";
+    display: table;
+}
+.source-wrapper:after {
+    clear: both;
+}
+
+span.source-wrapper {
+    width: 90%;
+    height: 28px;
+    display: block;
+    margin: 0 auto;
+    & > span {
+        display: block;
+        height: 28px;
+    }
+    span.source-statebox {
+        width: 28px;
+        height: 28px;
+        input {
+            width: 12px;
+            height: 12px;
+            margin: 8px;
+        }
+    }
+    span.source-namebox {
+        width: 104px;
+        height: 28px;
+        margin: 0 6px;
+        line-height: 28px;
+        font-family: OpenSans-Bold;
+        font-size: 10.5px;
+        color: $subColor;
+    }
+    span.source-typebox {
+        width: 64px;
+        height: 28px;
+        margin: 0 6px;
+        line-height: 28px;
+        font-family: OpenSans;
+        font-size: 10.5px;
+        color: $subColor;
+    }
+    span.source-samplebox {
+        width: 60px;
+        height: 28px;
+        div.sampler-toggle {
+            display: inline-block;
+            margin: 6px 0;
+            padding: 3px;
+            width: 38px;
+            height: 8px;
+            box-shadow: 0 0 0 1px rgba(0,0,0,.1);
+            border: 1px solid #dcdcdc;
+            border-radius: 1px;
+            background-color: #ffffff;
+            cursor: pointer;
+            div.sampler-text {
+                width: 38px;
+                height: 8px;
+                text-align: center;
+                line-height: 8px;
+                font-size: 9px;
+                font-family: OpenSans-Bold;
+            }
+        }
+    }
+    span.source-selectbox {
+        width: 152px;
+        height: 28px;
+        span.bind-select {
+            display: block;
+            padding: 5px 11px;
+        }
+    }
+    span.source-colorbox {
+        width: 60px;
+        height: 28px;
+        div.picker-toggle {
+            display: inline-block;
+            margin: 6px 0;
+            padding: 3px;
+            width: 38px;
+            height: 8px;
+            box-shadow: 0 0 0 1px rgba(0,0,0,.1);
+            border: 1px solid #dcdcdc;
+            border-radius: 1px;
+            background-color: #ffffff;
+            cursor: pointer;
+            div.picker-color {
+                width: 38px;
+                height: 8px;
+                border-radius: 2px;
+            }
+        }
+    }
+    span.source-destroybox {
+        width: 28px;
+        height: 28px;
+        img {
+            width: 10px;
+            height: 10px;
+            margin: 9px;
+            cursor: pointer;
+        }
+    }
+}

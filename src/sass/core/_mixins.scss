@@ -1,0 +1,65 @@
+$themeColor: #000080;
+$subColor: #ffffff;
+
+@font-face {
+  font-family: 'Roboto';
+  src: url('../fonts/Roboto/Roboto-Regular.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Roboto-Thin';
+  src: url('../fonts/Roboto/Roboto-Thin.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Roboto-Bold';
+  src: url('../fonts/Roboto/Roboto-Bold.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'OpenSans';
+  src: url('../fonts/Open_Sans/OpenSans-Regular.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'OpenSans-Bold';
+  src: url('../fonts/Open_Sans/OpenSans-Bold.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Oswald';
+  src: url('../fonts/Oswald/Oswald-Regular.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Dosis';
+  src: url('../fonts/Dosis/Dosis-Regular.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Dosis-Bold';
+  src: url('../fonts/Dosis/Dosis-Bold.ttf') format('truetype');
+}
+
+.boxCenter {
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.linearLeft {
+  float: left;
+}
+.linearRight {
+  float: right;
+}
+.linearContainer {
+  overflow: hidden;
+}
+/* clearfix */
+.linearContainer:before, .linearContainer:after {
+  content: "";
+  display: table;
+}
+.linearContainer:after {
+  clear: both;
+}
+
+html, body {
+  height: 100%;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+}
